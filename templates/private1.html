@@ -1,0 +1,991 @@
+{% extends "base.html" %}  
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<div>
+</div>
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Login</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <table id = 'hor-minimalist-a'>
+                        <thead> 
+                            <th colspan=2> Login </th> 
+                        </thead> 
+                        <tbody> 
+                        <tr> 
+                            <td> Username (email): </td> 
+                            <td><input type="text" id="userid" /></td>
+                        </tr> 
+                        <tr> 
+                            <td> Password: </td> 
+                            <td><input type="password" id="userpass" /></td>
+                        </tr> 
+                        <tr> 
+                            <td> </td> 
+                            <td> </td> 
+                        </tr> 
+                        <tr> 
+                            <!-- <td colspan="2" align="right" valign="bottom"> --> 
+                            <td align="left" valign="bottom"> 
+                                <input type="button" id="register" value="Register" />
+                            </td>
+                            <td align="right" valign="bottom"> 
+                                <input type="button" id="submit1" value="Login" />
+                            </td>
+                        </tr> 
+                        </tbody> 
+                        <tfoot> 
+                            <th colspan=2> 
+                            <div id="txt"> 
+                            </div>
+                            </th> 
+                        </tfoot> 
+                    </table> <!-- <table id = 'hor-minimalist-a'> --> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Portfolio Selection</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <div class="col-sm-2">
+                        <div id='id_folio'> </div>
+                    </div> <!-- <div class="col-sm-4"> --> 
+                    <div class="col-sm-6">
+                        <div id="id_asset_allocation"></div> 
+                    </div> <!-- <div class="col-sm-4"> --> 
+                    <div class="col-sm-4">
+                        <p> 
+                        Cash Equivalents:
+                        <div id="id_cash_equivalent"></div> 
+                        </p> 
+                    </div> <!-- <div class="col-sm-4"> --> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <!--education start -->
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Portfolio Divergence From Model</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <div id="id_dashboard"></div> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+    <!--education end -->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Position details</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <div id="id_position_latest"></div> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Trade Requirements for Rebalancing Portfolio</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <div id="id_tradereq"></div> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Drawdown Periods</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <div id="id_drawdowns"></div> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Risk Metrics</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div> 
+                    <input type="button" id="swap_load" value="Fetch"/>
+                </div> 
+                <div class="row"> 
+                    <table id='hor-minimalist-a'> 
+                        <thead> <th colspan=2>Risk Metrics</th> </thead> 
+                        <tbody> 
+                        <tr> 
+                            <td>Volatility:</td> 
+                            <td align='right'><div id="id_volatility"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Correlation</td> 
+                            <td align='right'><div id="id_correlation"></div></td>
+                            <!-- <td><input type="text" id="strategy"/></td> --> 
+                        </tr> 
+                        <tr> 
+                            <td>CAGR</td> 
+                            <td align='right'><div id="id_cagr"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Tracking Error</td> 
+                            <td align='right'><div id="id_trackerr"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Average Return of Positive Months</td> 
+                            <td align='right'><div id="id_avg_ret_pos_mths"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Average Return of Negative Months</td> 
+                            <td align='right'><div id="id_avg_ret_neg_mths"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Max Drawdown</td> 
+                            <td align='right'><div id="id_max_drawdown"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Sharpe Ratio</td> 
+                            <td align='right'><div id="id_sharpe_ratio"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Sortino Ratio</td> 
+                            <td align='right'><div id="id_sortino_ratio"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Value at Risk(95%, covariance)</td> 
+                            <td align='right'><div id="id_var95_covariance"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Value at Risk(95%, historical)</td> 
+                            <td align='right'><div id="id_var95_historical"></div></td>
+                        </tr> 
+                        </tbody> 
+                    </table> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Future Value Projection</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div> 
+                    <input type="button" id="btn_fetchfut" value="Fetch"/>
+                </div> 
+                <div class="row"> 
+                    <table id='hor-minimalist-a'> 
+                        <thead> <th colspan=2>Future Value Projection</th> </thead> 
+                        <tbody> 
+                        <tr> 
+                            <td>Holding Period (in years):</td> 
+                            <td align='right'><div id="id_proj_hold"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Annual Interest Rate:</td> 
+                            <td align='right'><div id="id_proj_intrate"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Monthly Deposit:</td> 
+                            <td align='right'><div id="id_proj_mlydep"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Future Value(FV):</td> 
+                            <td align='right'><div id="id_proj_fv"></div></td>
+                        </tr> 
+                        </tbody> 
+                    </table> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Income and Returns</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div> 
+                    <input type="button" id="btn_fetchIncome" value="Fetch"/>
+                </div> 
+                <div class="row"> 
+                    <div id='jqxTabs'>
+                        <ul>
+                            <li>Monthly</li>
+                            <li>Yearly</li>
+                        </ul> 
+                        <div><div id="idMlyIncomReturnGrid"></div></div> 
+                        <div><div id="idYlyIncomReturnGrid"></div></div> 
+                    </div> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Attribution</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <div id="id_attribution1"></div> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+{% endblock %} {# content #}
+
+{% block scripted %}
+<script rel="javascript" type="text/javascript">
+$(document).ready(function () {
+    var globalfolio;
+    var accesstoken;
+
+    $('#register, #submit1').jqxButton({ 
+        width: '160px',
+        height: '25px',
+        theme: 'ui-smoothness'
+    });
+    $('#userid, #userpass').jqxInput({ 
+        width: '300px',
+        height: '25px',
+        theme: 'ui-smoothness'
+    });
+    $('#id_folio').jqxListBox({ 
+        width: '75px',
+        height: '100px',
+        displayMember: "folio_name", 
+        valueMember: "folio_name",
+        theme: 'ui-smoothness'
+    });
+    $('#register').click(function () {
+        console.log("kya baat register");
+        var uid = $('#userid').val();
+        var pwd = $('#userpass').val();
+        var data = {'username':uid, 'email':uid, 'password':pwd} 
+        axios({
+            method: 'post',
+            url:  '/auth/register/v2',
+            config: { headers: {'Content-Type': 'multipart/form-data' }},
+            headers: { 'Content-Type': 'application/json' },
+            data: data 
+        })
+        .then((response) => {
+            console.log(response.data.data);
+            document.getElementById('txt').innerHTML=response.data.data;
+        })
+        .catch((error) => {
+            console.log(response.data.data);
+            document.getElementById('txt').innerHTML=response.data.data;
+        })
+    });
+    $('#submit1').click(function () {
+        console.log("kya baat submit");
+        var uid = $('#userid').val();
+        var pwd = $('#userpass').val();
+        var data = {'username':uid, 'email':uid, 'password':pwd} 
+        axios({
+            method: 'post',
+            url:  '/auth/login/v2',
+            config: { headers: {'Content-Type': 'multipart/form-data' }},
+            headers: { 'Content-Type': 'application/json' },
+            data: data 
+        })
+        .then((response) => {
+            console.log(response.data) 
+            sessionStorage.setItem('accesstoken', response.data.access_token);
+            accesstoken = response.data.access_token 
+            document.getElementById('txt').innerHTML = "Login successful!"
+            var url = "folios/v1";
+            var source = {
+                datatype: "json",
+                datafields: [
+                    { name: 'folio_name' }
+                ],
+                id: 'id',
+                type : 'GET',
+                root: 'data',
+                url: url
+            };
+            var dataAdapter = new $.jqx.dataAdapter(source, {
+                beforeSend: function (jqxhr, settings) { 
+                   jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                },
+                downloadComplete: function (data, status, xhr) { 
+                   console.log(xhr); 
+                }
+            });
+            $('#id_folio').jqxListBox({ 
+                source: dataAdapter
+            })
+        })
+        .catch((error) => {
+            console.log(error); 
+            document.getElementById('txt').innerHTML = "Login failed. Incorrect username or password."
+        })
+    });
+
+    $("#id_folio").on('select', function (event) {
+        if (event.args) {
+            var item = event.args.item;
+            if (item) {
+                globalfolio = item.value;
+                console.log("selected folio: " + globalfolio);
+                var url = "folio/allocation/v1?folioname=" + globalfolio;
+                var source = {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'assetclass', type:'string'},
+                        { name: 'allocated', type:'number'}
+                    ],
+                    id: 'ident',
+                    type : 'GET',
+                    url: url,
+                    root: 'data'
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source, {
+                    beforeSend: function (jqxhr, settings) { 
+                       jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                    },
+                    downloadComplete: function (data, status, xhr) { 
+                       console.log(xhr); 
+                    }
+                });
+                $("#id_asset_allocation").jqxGrid({ source: dataAdapter });
+                axios({
+                    method: 'get',
+                    url:  "folio/cash/v1?folioname=" + globalfolio,
+                    config: { 
+                        headers: {'Content-Type': 'multipart/form-data',
+                        'Authorization': 'Bearer ' + accesstoken 
+                    }},
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + accesstoken 
+                    }
+                })
+                .then((response) => {
+                    document.getElementById('id_cash_equivalent').innerHTML = (response.data.data * 100).toFixed(2) + "%";
+                })
+                .catch((error) => {
+                });
+            }
+        }
+    });
+
+    $("#id_proj_intrate").jqxNumberInput({ 
+        width: '125px', 
+        height: '25px', 
+        digits: 3, 
+        symbolPosition: 'right', 
+        symbol: '%', 
+        spinButtons: true 
+    });
+    $('#id_proj_intrate').jqxNumberInput('val', 6.00);
+    $("#id_proj_mlydep").jqxNumberInput({ 
+        width: '125px', 
+        height: '25px', 
+        digits: 5, 
+        symbol: '$', 
+        spinButtons: true 
+    });
+    $('#id_proj_mlydep').jqxNumberInput('val', 500.00);
+    $("#id_proj_hold").jqxNumberInput({ 
+        width: '125px', 
+        height: '25px', 
+        digits: 3, 
+        spinButtons: true 
+    });
+    $('#id_proj_hold').jqxNumberInput('val', 10.00);
+
+    
+    /*
+    $("#id_folio_grup").jqxButtonGroup({
+        width: '400px',
+        height: '25px',
+        theme: 'ui-smoothness',
+        mode: 'radio'
+    });
+    $("#id_folio_grup").jqxButtonGroup('setSelection', 0);
+    $("#id_folio_grup").on('buttonclick', function (event) {
+        var clickedButton = event.args.button;
+        globalfolio = clickedButton[0].innerHTML
+    });
+    $("#strategy").jqxInput({ 
+        width: '165px', 
+        height: '25px', 
+        theme: 'ui-smoothness', 
+        disabled: true
+    });
+    */
+
+    $("#swap_load").jqxButton({ width: '360px', height: '25px', theme: 'ui-smoothness' });
+    $('#swap_load').click(function(){
+        axios({
+            method: 'get',
+            url:  "metrics/v2?folioname=" + globalfolio,
+            config: { 
+                headers: {'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + accesstoken 
+            }},
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accesstoken 
+            }
+        })
+        .then((response) => {
+            document.getElementById('id_volatility').innerHTML = (response.data.data.volatility * 100).toFixed(2) + "%";
+            document.getElementById('id_correlation').innerHTML = (response.data.data.correlation * 100).toFixed(2) + "%";
+            document.getElementById('id_cagr').innerHTML = (response.data.data.cagr * 100).toFixed(2) + "%";
+            document.getElementById('id_trackerr').innerHTML = (response.data.data.trackerr * 100).toFixed(2) + "%";
+            document.getElementById('id_avg_ret_pos_mths').innerHTML = (response.data.data.avg_ret_pos_mths * 100).toFixed(2) + "%";
+            document.getElementById('id_avg_ret_neg_mths').innerHTML = (response.data.data.avg_ret_neg_mths * 100).toFixed(2) + "%";
+            document.getElementById('id_max_drawdown').innerHTML = (response.data.data.max_drawdown * 100).toFixed(2) + "%";
+            document.getElementById('id_sharpe_ratio').innerHTML = response.data.data.sharpe_ratio.toFixed(2);
+            document.getElementById('id_sortino_ratio').innerHTML = response.data.data.sortino_ratio.toFixed(2);
+            document.getElementById('id_var95_covariance').innerHTML = (response.data.data.var95_covariance * 100).toFixed(2) + "%";
+            document.getElementById('id_var95_historical').innerHTML = (response.data.data.var95_historical * 100).toFixed(2) + "%";
+        })
+        .catch((error) => {
+        });
+    });
+
+    $("#btn_fetchfut").jqxButton({ width: '360px', height: '25px', theme: 'ui-smoothness' });
+    $('#btn_fetchfut').click(function(){
+        proj_hold = $("#id_proj_hold").jqxNumberInput('getDecimal')
+        proj_intrate = $("#id_proj_intrate").jqxNumberInput('getDecimal')
+        proj_mlydep = $("#id_proj_mlydep").jqxNumberInput('getDecimal')
+        args = 
+            "folioname=" + globalfolio +
+            "&hold=" + proj_hold + 
+            "&intrate=" + proj_intrate + 
+            "&mlydep=" + proj_mlydep; 
+        axios({
+            method: 'get',
+            url:  "folio/projection/v1?" + args,
+            config: { 
+                headers: {'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + accesstoken 
+            }},
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accesstoken 
+            }
+        })
+        .then((response) => {
+            let USDollar = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+            });
+            document.getElementById('id_proj_fv').innerHTML = USDollar.format(response.data.data) ;
+        })
+        .catch((error) => {
+        });
+    });
+
+
+
+    $("#id_tradereq").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '700',
+        showtoolbar: true,
+        rendertoolbar: function (statusbar) {
+            var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
+            var reloadButton   = $(" \
+                <div style='float:left; margin-left:1px;'> \
+                <img style='position:relative; margin-top:1px; width:20px; height:20px;' src=\"{{ url_for('static', path='/img/refresh.png') }}\" /> \
+                <span style='margin-left: 5px; position: relative; top: -1px;'>Fetch</span> </div>");
+            container.append(reloadButton);
+            statusbar.append(container);
+            reloadButton.jqxButton({ theme: 'ui-smoothness', width: 75, height: 20 });
+            reloadButton.click(function (event) {
+                var url = "folio/tradereq/v1?folioname=" + globalfolio;
+                var source = {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'symbol', type:'string'},
+                        { name: 'side', type:'string'},
+                        { name: 'qty', type:'number'},
+                        { name: 'asofdate', type:'string'},
+                        { name: 'quantity', type:'number'},
+                        { name: 'account', type:'string'}
+                    ],
+                    id: 'ident',
+                    cache: false,
+                    type : 'GET',
+                    pagesize: 20,
+                    url: url,
+                    root: 'data',
+                    updaterow: function (rowid, rowdata, commit) {
+                    }
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source, {
+                    beforeSend: function (jqxhr, settings) { 
+                       jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                    },
+                    downloadComplete: function (data, status, xhr) { 
+                       console.log(xhr); 
+                    },
+                    loadError(xhr, status, error) {
+                       console.log(status); 
+                       console.log(error); 
+                    }
+                });
+                $("#id_tradereq").jqxGrid({ source: dataAdapter });
+            });
+        },
+        renderstatusbar: function(statusbar) {
+        },
+        ready: function () {
+        },
+        columns: [
+            { text: 'Symbol', dataField: 'symbol', width: 100, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Side', dataField: 'side', width: 100, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Quantity', dataField: 'qty', width: 100, cellsalign: 'right',  cellsformat: 'n0'},
+            { text: 'Last Traded', dataField: 'asofdate', width: 100, cellsalign: 'center',  cellsformat: 's'},
+            { text: 'Direction', dataField: 'quantity', width: 100, cellsalign: 'right',  cellsformat: 'n0'},
+            { text: 'Folio', dataField: 'account', width: 200, cellsalign: 'left',  cellsformat: 's'}
+        ]
+    });
+
+    $("#id_drawdowns").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '1200',
+        showtoolbar: true,
+        rendertoolbar: function (statusbar) {
+            var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
+            var reloadButton   = $(" \
+                <div style='float:left; margin-left:1px;'> \
+                <img style='position:relative; margin-top:1px; width:20px; height:20px;' src=\"{{ url_for('static', path='/img/refresh.png') }}\" /> \
+                <span style='margin-left: 5px; position: relative; top: -1px;'>Fetch</span> </div>");
+            container.append(reloadButton);
+            statusbar.append(container);
+            reloadButton.jqxButton({ theme: 'ui-smoothness', width: 75, height: 20 });
+            reloadButton.click(function (event) {
+                var url = "folio/drawdowns/v1?folioname=" + globalfolio;
+                var source = {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'start', type:'date'},
+                        { name: 'end', type:'date'},
+                        { name: 'length', type:'number'},
+                        { name: 'drawdown', type:'number'},
+                        { name: 'trough', type:'date'},
+                        { name: 'daysToTrough', type:'number'},
+                        { name: 'daysInRecovery', type:'number'},
+                        { name: 'pctRecovery', type:'number'},
+                        { name: 'pctRecoveryRemaining', type:'number'}
+                    ],
+                    id: 'ident',
+                    cache: false,
+                    type : 'GET',
+                    pagesize: 20,
+                    url: url,
+                    root: 'data',
+                    updaterow: function (rowid, rowdata, commit) {
+                    }
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source, {
+                    beforeSend: function (jqxhr, settings) { 
+                       jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                    },
+                    downloadComplete: function (data, status, xhr) { 
+                       console.log(xhr); 
+                    }
+                });
+                $("#id_drawdowns").jqxGrid({ source: dataAdapter });
+            });
+        },
+        renderstatusbar: function(statusbar) {
+        },
+        ready: function () {
+        },
+        columns: [
+            { text: 'Start', dataField: 'start', width: 100, cellsalign: 'center',  cellsformat: 'yyyy-MM-dd'},
+            { text: 'End', dataField: 'end', width: 100, cellsalign: 'center',  cellsformat: 'yyyy-MM-dd'},
+            { text: 'Length', dataField: 'length', width: 100, cellsalign: 'right',  cellsformat: 'n'},
+            { text: 'Drawdown', dataField: 'drawdown', width: 100, cellsalign: 'right',  cellsformat: 'p2'},
+            { text: 'Trough', dataField: 'trough', width: 100, cellsalign: 'center',  cellsformat: 'yyyy-MM-dd'},
+            { text: 'Days to Traugh', dataField: 'daysToTrough', width: 100, cellsalign: 'right',  cellsformat: 'n'},
+            { text: 'Days In Recovery', dataField: 'daysInRecovery', width: 100, cellsalign: 'right',  cellsformat: 'n'},
+            { text: 'Percent Recovery', dataField: 'pctRecovery', width: 100, cellsalign: 'right',  cellsformat: 'p2'},
+            { text: 'Percent Recovery Remaining', dataField: 'pctRecoveryRemaining', width: 100, cellsalign: 'right',  cellsformat: 'p2'}
+        ]
+    });
+
+    $("#id_position_latest").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        showaggregates: true,
+        showstatusbar: true,
+        statusbarheight: 30,
+        showtoolbar: true,
+        rendertoolbar: function (statusbar) {
+            var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
+            var reloadButton   = $(" \
+                <div style='float:left; margin-left:1px;'> \
+                <img style='position:relative; margin-top:1px; width:20px; height:20px;' src=\"{{ url_for('static', path='/img/refresh.png') }}\" /> \
+                <span style='margin-left: 5px; position: relative; top: -1px;'>Fetch</span> </div>");
+            container.append(reloadButton);
+            statusbar.append(container);
+            reloadButton.jqxButton({ theme: 'ui-smoothness', width: 75, height: 20 });
+            reloadButton.click(function (event) {
+                var url = "position/latest/v1?folioname=" + globalfolio;
+                var source = {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'symbol', type:'string'},
+                        { name: 'notional', type:'number'},
+                        { name: 'last_px', type:'number'},
+                        { name: 'description', type:'string'}
+                    ],
+                    id: 'ident',
+                    cache: false,
+                    type : 'GET',
+                    pagesize: 20,
+                    url: url,
+                    root: 'data',
+                    updaterow: function (rowid, rowdata, commit) {
+                    }
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source, {
+                    beforeSend: function (jqxhr, settings) { 
+                       jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                    },
+                    downloadComplete: function (data, status, xhr) { 
+                       console.log(xhr); 
+                    }
+                });
+                $("#id_position_latest").jqxGrid({ source: dataAdapter });
+            });
+        },
+        renderstatusbar: function(statusbar) {
+        },
+        ready: function () {
+        },
+        columns: [
+            { text: 'Symbol', dataField: 'symbol', width: 100, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Notional', dataField: 'notional', width: 100, cellsalign: 'right',  cellsformat: 'c0', aggregates:['sum']},
+            { text: 'Last Price', dataField: 'last_px', width: 100, cellsalign: 'right',  cellsformat: 'c2'},
+            { text: 'Description', dataField: 'description', width: 300, cellsalign: 'left',  cellsformat: 's'}
+        ]
+    });
+    $("#id_asset_allocation").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '500',
+        showaggregates: true,
+        showstatusbar: true,
+        statusbarheight: 30,
+        columns: [
+            { text: 'Asset Class', dataField: 'assetclass', width: 400, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Allocation', dataField: 'allocated', width: 100, cellsalign: 'right',  cellsformat: 'p0', aggregates:['sum']}
+        ]
+    });
+    $("#id_dashboard").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '700',
+        showtoolbar: true,
+        showaggregates: true,
+        showstatusbar: true,
+        statusbarheight: 30,
+        rendertoolbar: function (statusbar) {
+            var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
+            var reloadButton   = $(" \
+                <div style='float:left; margin-left:1px;'> \
+                <img style='position:relative; margin-top:1px; width:20px; height:20px;' src=\"{{ url_for('static', path='/img/refresh.png') }}\" /> \
+                <span style='margin-left: 5px; position: relative; top: -1px;'>Fetch</span> </div>");
+            container.append(reloadButton);
+            statusbar.append(container);
+            reloadButton.jqxButton({ theme: 'ui-smoothness', width: 75, height: 20 });
+            reloadButton.click(function (event) {
+                // var folioname = $("#id_folio_grup").jqxButtonGroup('getSelection');
+                var url = "folio/dashboard/v1?folioname=" + globalfolio;
+                var source = {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'sector', type:'string'},
+                        { name: 'symbol', type:'string'},
+                        { name: 'allocated', type:'number'},
+                        { name: 'actual', type:'number'},
+                        { name: 'forecast', type:'number'},
+                        { name: 'spread', type:'number'}
+                    ],
+                    id: 'ident',
+                    type : 'GET',
+                    url: url,
+                    root: 'data'
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source, {
+                    beforeSend: function (jqxhr, settings) { 
+                       jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                    },
+                    downloadComplete: function (data, status, xhr) { 
+                       console.log(xhr); 
+                    }
+                });
+                $("#id_dashboard").jqxGrid({ source: dataAdapter });
+            });
+        },
+        renderstatusbar: function(statusbar) {
+        },
+        ready: function () {
+        },
+        columns: [
+            { text: 'Sector', dataField: 'sector', width: 200, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Symbol', dataField: 'symbol', width: 100, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Allocation', dataField: 'allocated', width: 100, cellsalign: 'center',  cellsformat: 'p0', aggregates:['sum']},
+            { text: 'Actual($)', dataField: 'actual', width: 100, cellsalign: 'right',  cellsformat: 'n0'},
+            { text: 'Forecast($)', dataField: 'forecast', width: 100, cellsalign: 'right',  cellsformat: 'n0'},
+            { text: 'Spread($)', dataField: 'spread', width: 100, cellsalign: 'right',  cellsformat: 'n0'}
+        ]
+    });
+
+    //--- section: income and returns [start] ---
+
+    $('#btn_fetchIncome').jqxButton({ width: '360px', height: '25px', theme: 'ui-smoothness' });
+    $('#btn_fetchIncome').click(function(){
+        var url = 'folio/income/mtd/v1?folioname=' + globalfolio;
+        var source = {
+            datatype: "json",
+            datafields: [
+                { name: 'asofdate', type:'string'},
+                { name: 'income', type:'number'},
+                { name: 'return', type:'number'},
+                { name: 'flow', type:'number'}
+            ],
+            id: 'ident',
+            cache: false,
+            type : 'GET',
+            pagesize: 20,
+            url: url,
+            root: 'data',
+            updaterow: function (rowid, rowdata, commit) {
+            }
+        };
+        var dataAdapter = new $.jqx.dataAdapter(source, {
+            beforeSend: function (jqxhr, settings) { 
+               jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+            },
+            downloadComplete: function (data, status, xhr) { 
+               console.log(xhr); 
+            },
+            loadError(xhr, status, error) {
+               console.log(status); 
+               console.log(error); 
+            }
+        });
+        $("#idMlyIncomReturnGrid").jqxGrid({ source: dataAdapter });
+    });
+
+    $('#jqxTabs').jqxTabs({
+        width: 800,
+        height: 500,
+        position: 'top',
+        initTabContent: initWidgets,
+        theme: 'ui-smoothness'
+    });
+
+    var initFetchYearlyGrid = function() {
+        var url = 'folio/income/ytd/v1?folioname=' + globalfolio;
+        var source = {
+            datatype: "json",
+            datafields: [
+                { name: 'year', type:'string'},
+                { name: 'ytd', type:'number'},
+                { name: 'income', type:'number'},
+                { name: 'flow', type:'number'}
+            ],
+            id: 'ident',
+            cache: false,
+            type : 'GET',
+            pagesize: 20,
+            url: url,
+            root: 'data',
+            updaterow: function (rowid, rowdata, commit) {
+            }
+        };
+        var dataAdapter = new $.jqx.dataAdapter(source, {
+            beforeSend: function (jqxhr, settings) { 
+               jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+            },
+            downloadComplete: function (data, status, xhr) { 
+               console.log(xhr); 
+            },
+            loadError(xhr, status, error) {
+               console.log(status); 
+               console.log(error); 
+            }
+        });
+        $("#idYlyIncomReturnGrid").jqxGrid({ source: dataAdapter });
+    }
+
+    $('#jqxTabs').on('selected', function (event) {
+        var selectedTab = event.args.item;
+        switch(selectedTab) {
+            case 0:
+                //initFetchPosGrid();
+                break;
+            case 1:
+                initFetchYearlyGrid();
+                break;
+        }
+    });
+
+    var initWidgets = function(tab) {
+        switch(tab) {
+            case 0:
+                //initFetchPosGrid();
+                break;
+            case 1:
+                initFetchYearlyGrid();
+                break;
+        }
+    }
+
+    $("#idMlyIncomReturnGrid").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '500',
+        columns: [
+            { text: 'Date', dataField: 'asofdate', width: 100, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Returns', dataField: 'return', width: 100, cellsalign: 'right',  cellsformat: 'p2'},
+            { text: 'Income', dataField: 'income', width: 100, cellsalign: 'right',  cellsformat: 'c2'},
+            { text: 'Flow', dataField: 'flow', width: 100, cellsalign: 'right',  cellsformat: 'c0'}
+        ]
+    });
+
+    $("#idYlyIncomReturnGrid").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '500',
+        columns: [
+            { text: 'Date', dataField: 'year', width: 100, cellsalign: 'center' },
+            { text: 'Returns', dataField: 'ytd', width: 100, cellsalign: 'right',  cellsformat: 'p2'},
+            { text: 'Income', dataField: 'income', width: 100, cellsalign: 'right',  cellsformat: 'c2'},
+            { text: 'Flow', dataField: 'flow', width: 100, cellsalign: 'right',  cellsformat: 'c0'}
+        ]
+    });
+
+    //--- section: attribution report --- 
+
+    $("#id_attribution1").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '1200',
+        showtoolbar: true,
+        showaggregates: true,
+        showstatusbar: true,
+        statusbarheight: 30,
+        rendertoolbar: function (statusbar) {
+            var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
+            var reloadButton   = $(" \
+                <div style='float:left; margin-left:1px;'> \
+                <img style='position:relative; margin-top:1px; width:20px; height:20px;' src=\"{{ url_for('static', path='/img/refresh.png') }}\" /> \
+                <span style='margin-left: 5px; position: relative; top: -1px;'>Fetch</span> </div>");
+            container.append(reloadButton);
+            statusbar.append(container);
+            reloadButton.jqxButton({ theme: 'ui-smoothness', width: 75, height: 20 });
+            reloadButton.click(function (event) {
+                var url = "folio/attribution/v1?folioname=" + globalfolio;
+                var source = {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'symbol', type:'string'},
+                        { name: '202410', type:'string'},
+                        { name: '202411', type:'string'},
+                        { name: '202412', type:'string'}
+                    ],
+                    id: 'ident',
+                    cache: false,
+                    type : 'GET',
+                    pagesize: 20,
+                    url: url,
+                    root: 'data',
+                    updaterow: function (rowid, rowdata, commit) {
+                    }
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source, {
+                    beforeSend: function (jqxhr, settings) { 
+                       jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                    },
+                    downloadComplete: function (data, status, xhr) { 
+                       console.log(xhr); 
+                    }
+                });
+                $("#id_attribution1").jqxGrid({ source: dataAdapter });
+            });
+        },
+        renderstatusbar: function(statusbar) {
+        },
+        ready: function () {
+        },
+        columns: [
+            { text: 'Symbol', dataField: 'symbol', width: 100, cellsalign: 'left',  cellsformat: 's'},
+            { text: '202410', dataField: '202410', width: 100, cellsalign: 'right',  cellsformat: 'p2', aggregates:['sum']},
+            { text: '202411', dataField: '202411', width: 100, cellsalign: 'right',  cellsformat: 'p2', aggregates:['sum']},
+            { text: '202412', dataField: '202412', width: 100, cellsalign: 'right',  cellsformat: 'p2', aggregates:['sum']}
+        ]
+    });
+
+
+});
+</script>
+{% endblock %} {# scripted #}
+

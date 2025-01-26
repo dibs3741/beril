@@ -1,0 +1,106 @@
+{% block title %}
+   <title> BERIL - Portfolio Management System</title> 
+{% endblock %}
+
+{% block head %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {% block styles %}
+        <link href="{{ url_for('static', path='/expresstable.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static', path='/jqwidgets/jqwidgets/styles/jqx.base.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static', path='/jqwidgets/jqwidgets/styles/jqx.ui-smoothness.css') }}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:300,400,500,600,700|Crete+Round:400i" type="text/css">
+
+        <link href="{{ url_for('static', path='/browny-v1.0/assets/logo/favicon.png') }}" rel="shortcut icon" type="image/icon">
+        <link href="{{ url_for('static', path='/browny-v1.0/assets/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static', path='/browny-v1.0/assets/css/flaticon.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static', path='/browny-v1.0/assets/css/animate.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static', path='/browny-v1.0/assets/css/owl.carousel.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static', path='/browny-v1.0/assets/css/owl.theme.default.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static', path='/browny-v1.0/assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static', path='/browny-v1.0/assets/css/bootsnav.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static', path='/browny-v1.0/assets/css/style.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static', path='/browny-v1.0/assets/css/responsive.css') }}" rel="stylesheet" type="text/css">
+    {% endblock %} {# styles #}
+{% endblock %} {# head #}
+
+<!-- top-area Start -->
+<header class="top-area">
+    <div class="header-area">
+        <!-- Start Navigation -->
+        <nav class="navbar navbar-default bootsnav navbar-fixed dark no-background">
+            <div class="container">
+                <!-- Start Header Navigation -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand" href="/">beril</a>
+                </div><!--/.navbar-header-->
+                <!-- End Header Navigation -->
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                    <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                    <li class=" smooth-menu active"></li>
+                        <!-- 
+                        <li class="smooth-menu"><a href="#education">education</a></li>
+                        <li class="smooth-menu"><a href="#skills">skills</a></li>
+                        <li class="smooth-menu"><a href="#experience">experience</a></li>
+                        <li class="smooth-menu"><a href="#profiles">profile</a></li>
+                        <li class="smooth-menu"><a href="#portfolio">portfolio</a></li>
+                        <li class="smooth-menu"><a href="#clients">clients</a></li>
+                        <li class="smooth-menu"><a href="#contact">contact</a></li>
+                        --> 
+                        <li><a href="/">home</a></li>
+                        <li><a href="/private">private</a></li>
+                        <li class="smooth-menu"><a href="#about">the mission</a></li>
+                        <li class="smooth-menu"><a href="#education">strategy</a></li>
+                        <li class="smooth-menu"><a href="#skills">asset classes</a></li>
+                        <li class="smooth-menu"><a href="#experience">features</a></li>
+                    </ul><!--/.nav -->
+                </div><!-- /.navbar-collapse -->
+            </div><!--/.container-->
+        </nav><!--/nav-->
+        <!-- End Navigation -->
+    </div><!--/.header-area-->
+    <div class="clearfix"></div>
+</header><!-- /.top-area-->
+<!-- top-area End -->
+<body>
+{% block content %}
+{% endblock %} {# content #}
+</body>
+
+{% block scripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script> 
+    <script src="{{ url_for('static', path='jqwidgets/scripts/jquery-1.11.1.min.js') }}"></script>
+    <script src="{{ url_for('static', path='jqwidgets/jqwidgets/jqxcore.js') }}"></script>
+    <script src="{{ url_for('static', path='jqwidgets/jqwidgets/jqxmenu.js') }}"></script>
+    <script src="{{ url_for('static', path='jqwidgets/jqwidgets/jqx-all.js') }}"></script>
+    <script src="{{ url_for('static', path='jqwidgets/scripts/angular.min.js') }}"></script>
+    <script src="{{ url_for('static', path='jqwidgets/jqwidgets/globalization/globalize.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="{{ url_for('static', path='browny-v1.0/assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', path='browny-v1.0/assets/js/bootsnav.js') }}"></script>
+    <script src="{{ url_for('static', path='browny-v1.0/assets/js/jquery.sticky.js') }}"></script>
+    <script src="{{ url_for('static', path='browny-v1.0/assets/js/progressbar.js') }}"></script>
+    <script src="{{ url_for('static', path='browny-v1.0/assets/js/jquery.appear.js') }}"></script>
+    <script src="{{ url_for('static', path='browny-v1.0/assets/js/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', path='browny-v1.0/assets/js/custom.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // your JavaScript code here.
+        });
+    </script>
+    {% block scripted %}{% endblock %}
+{% endblock %}
+

@@ -1,0 +1,168 @@
+{% extends "base.html" %}  
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+      <!--contact start -->
+      <section id="contact" class="contact">
+         <div class="section-heading text-center">
+            <h2>Login to view your private page</h2>
+         </div>
+
+         <div class="container">
+            <div class="contact-content">
+               <div class="row">
+                  <div class="col-md-offset-1 col-md-5 col-sm-6">
+                     <div class="single-contact-box">
+                        <div class="contact-form">
+                           <form action="/auth/login" method="post">
+                              <div class="row">
+                                 <div class="col-sm-12">
+                                    <div class="form-group">
+                                       <input type="email" class="form-control" id="email" placeholder="Email*" name="username" required>
+                                    </div><!--/.form-group-->
+                                 </div><!--/.col-->
+                              </div><!--/.row-->
+                              <div class="row">
+                                 <div class="col-sm-12">
+                                    <div class="form-group">
+                                       <input type="password" class="form-control" id="password" placeholder="Password*" name="password" required>
+                                    </div><!--/.form-group-->
+                                 </div><!--/.col-->
+                              </div><!--/.row-->
+                              <div class="row">
+                                 <div class="col-sm-12">
+                                    <div class="form-group">
+                                       <input type="submit" class="contact-btn" value="Submit">
+                                    </div><!--/.form-group-->
+                                 </div><!--/.col-->
+                              </div><!--/.row-->
+                              <div class="row">
+                                 <div class="col-sm-12">
+                                    <div class="single-contact-btn">
+                                       <a class="contact-btn" href="#" role="button">submit</a> 
+                                    </div><!--/.single-single-contact-btn-->
+                                 </div><!--/.col-->
+                              </div><!--/.row-->
+                           </form><!--/form-->
+                        </div><!--/.contact-form-->
+                     </div><!--/.single-contact-box-->
+                  </div><!--/.col-->
+               </div><!--/.row-->
+            </div><!--/.contact-content-->
+         </div><!--/.container-->
+
+         <div class="container">
+            <div class="contact-content">
+                    <table id = 'hor-minimalist-a'>
+                        <thead> 
+                            <th colspan=2> Login </th> 
+                        </thead> 
+                        <tbody> 
+                        <tr> 
+                            <td> Username (email): </td> 
+                            <td><input type="text" id="userid" /></td>
+                        </tr> 
+                        <tr> 
+                            <td> Password: </td> 
+                            <td><input type="password" id="userpass" /></td>
+                        </tr> 
+                        <tr> 
+                            <td> </td> 
+                            <td> </td> 
+                        </tr> 
+                        <tr> 
+                            <!-- <td colspan="2" align="right" valign="bottom"> --> 
+                            <td align="left" valign="bottom"> 
+                                <input type="button" id="register" value="Register" />
+                            </td>
+                            <td align="right" valign="bottom"> 
+                                <input type="button" id="submit1" value="Login" />
+                            </td>
+                        </tr> 
+                        </tbody> 
+                        <tfoot> 
+                            <th colspan=2> 
+                            <div id="txt"> 
+                            </div>
+                            </th> 
+                        </tfoot> 
+                    </table> <!-- <table id = 'hor-minimalist-a'> --> 
+            </div><!--/.contact-content-->
+         </div><!--/.container-->
+      </section><!--/.contact-->
+      <!--contact end -->
+
+{% endblock %} {# content #}
+
+{% block scripted %}
+<script rel="javascript" type="text/javascript">
+$(document).ready(function () {
+        $('#submit1').jqxButton({ 
+            width: '160px',
+            height: '25px',
+            theme: 'ui-smoothness'
+        });
+        $('#register').jqxButton({ 
+            width: '160px',
+            height: '25px',
+            theme: 'ui-smoothness'
+        });
+        $('#userid, #userpass').jqxInput({ 
+            width: '300px',
+            height: '25px',
+            theme: 'ui-smoothness'
+        });
+        $('#register').click(function () {
+            console.log("kya baat register");
+            var uid = $('#userid').val();
+            var pwd = $('#userpass').val();
+            var data = {'username':uid, 'email':uid, 'password':pwd} 
+            axios({
+                method: 'post',
+                url:  '/auth/register/v2',
+                config: { headers: {'Content-Type': 'multipart/form-data' }},
+                headers: { 'Content-Type': 'application/json' },
+                data: data 
+            })
+            .then((response) => {
+                console.log(response.data.data);
+                document.getElementById('txt').innerHTML=response.data.data;
+            })
+            .catch((error) => {
+                console.log(response.data.data);
+                document.getElementById('txt').innerHTML=response.data.data;
+            })
+        });
+        $('#submit1').click(function () {
+            console.log("kya baat submit");
+            var uid = $('#userid').val();
+            var pwd = $('#userpass').val();
+            var data = {'username':uid, 'email':uid, 'password':pwd} 
+            axios({
+                method: 'post',
+                url:  '/auth/login/v2',
+                config: { headers: {'Content-Type': 'multipart/form-data' }},
+                headers: { 'Content-Type': 'application/json' },
+                data: data 
+            })
+            .then((response) => {
+                console.log(response.data) 
+                // window.location = "/private" 
+            })
+            .catch((error) => {
+            })
+        });
+});
+</script>
+{% endblock %} {# scripted #}
+

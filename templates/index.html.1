@@ -1,0 +1,668 @@
+{% extends "base.html" %}  
+
+{% block content %}
+    <!--welcome-hero start -->
+    <section id="welcome-hero" class="welcome-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="header-text">
+                        <h2>beril </h2> 
+                        <p>asset allocation and portfolio diversication system</p> 
+                        <p></p>
+                    </div><!--/.header-text-->
+                </div><!--/.col-->
+            </div><!-- /.row-->
+        </div><!-- /.container-->
+    </section><!--/.welcome-hero-->
+    <!--welcome-hero end -->
+
+    <!--about start -->
+    <section id="about" class="about">
+        <div class="section-heading text-center">
+            <h2>the mission</h2>
+        </div>
+        <div class="container">
+            <div class="about-content">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="single-about-txt">
+                            <h3>
+                                BERIL aims to provide a framework and guardrails to invest primarily with a focus on diversification and maintaining an asset allocation that minimizes risk of capital loss and provides a reasonable return over a long duration. 
+                            </h3>
+                            <p>
+                                Designed primarily for investors with a 10 to 15 years to retirement, BERIL helps to stay invested optimally weathering any market conditions. It helps create an all-weather portfolio that investors can create with minimum effort. It.s a semi-automated system that encourages users to be hands on with their investments but eliminates the need to do their own research.
+                            </p>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="single-about-add-info">
+                                        <h3>phone</h3>
+                                        <p>843-900-7452</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="single-about-add-info">
+                                        <h3>email</h3>
+                                        <p>berilsoft@info.com</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="single-about-add-info">
+                                        <h3>website</h3>
+                                        <p>www.berilsoft.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- <div class="col-sm-6"> --> 
+                    <div class="col-sm-offset-1 col-sm-5">
+                        <div class="single-about-img">
+                            <img src="{{ url_for('static', path='browny-v1.0/assets/images/about/profile_image.jpg') }}" alt="profile_image">
+							<div class="about-list-icon">
+                            <div class="single-about-txt">
+                            <p> Tradition 60-40 portfolio cannot handle the next decade's rapid shift in inflation, geopolitics and climate change</p> 
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div>
+    </section><!--/.about-->
+    <!--about end -->
+
+    <!--education start -->
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>strategy</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="single-horizontal-timeline">
+                            <div class="experience-time">
+                                <!--
+                                <h2>design</h2>
+                                <h3>design <span>your </span> investment strategy</h3>
+                                --> 
+                            </div><!--/.experience-time-->
+                            <div class="timeline-horizontal-border">
+                                <i class="fa fa-circle" aria-hidden="true"></i>
+                                <span class="single-timeline-horizontal"></span>
+                            </div>
+                            <div class="timeline">
+                                <div class="timeline-content">
+                                    <h4 class="title">
+                                        design
+                                    </h4>
+                                    <h5>design your investment strategy</h5>
+                                    <p class="description">
+                                        Craft your own investment strategy by chosing satellite asset classes to leverage specific market conditions
+                                    </p>
+                                </div><!--/.timeline-content-->
+                            </div><!--/.timeline-->
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="single-horizontal-timeline">
+                            <div class="experience-time">
+                                <!--
+                                <h2>build</h2>
+                                <h3>build <span>your </span> investment model</h3>
+                                -->
+                            </div><!--/.experience-time-->
+                            <div class="timeline-horizontal-border">
+                                <i class="fa fa-circle" aria-hidden="true"></i>
+                                <span class="single-timeline-horizontal"></span>
+                            </div>
+                            <div class="timeline">
+                                <div class="timeline-content">
+                                    <h4 class="title">
+                                        build
+                                    </h4>
+                                    <h5>build your investment model</h5>
+                                    <p class="description">
+                                        Allocate a portion to each asset class and let the sysem tell you whato to trade to keep your positions close to your allocations
+                                    </p>
+                                </div><!--/.timeline-content-->
+                            </div><!--/.timeline-->
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="single-horizontal-timeline">
+                            <div class="experience-time">
+                                <!--
+                                <h2>2004 - 2008</h2>
+                                <h3>bachelor <span>of </span> creative design</h3>
+                                -->
+                            </div><!--/.experience-time-->
+                            <div class="timeline-horizontal-border">
+                                <i class="fa fa-circle" aria-hidden="true"></i>
+                                <span class="single-timeline-horizontal"></span>
+                            </div>
+                            <div class="timeline">
+                                <div class="timeline-content">
+                                    <h4 class="title">
+                                        measure
+                                    </h4>
+                                    <h5>track your performance</h5>
+                                    <p class="description">
+                                        Track the performance of your investments using drawndown deviations, compare and forecast your growth and backtest over historical financial crisis situations
+                                    </p>
+                                </div><!--/.timeline-content-->
+                            </div><!--/.timeline-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!--/.education-->
+    <!--education end -->
+
+    <!--skills start -->
+    <section id="skills" class="skills">
+            <div class="skill-content">
+                <div class="section-heading text-center">
+                    <h2>asset classes</h2>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="single-skill-content">
+                                <div class="barWrapper">
+                                    <span class="progressText">Developed N America - USA, Canada</span>
+                                    <div class="single-progress-txt">
+                                        <div class="progress ">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="10" aria-valuemax="100" style="">
+                                                  
+                                            </div>
+                                        </div>
+                                        <h3>90%</h3>	
+                                    </div>
+                                </div><!-- /.barWrapper -->
+                                <div class="barWrapper">
+                                    <span class="progressText">Developed International - Europe, Australia, Japan</span>
+                                    <div class="single-progress-txt">
+                                        <div class="progress ">
+                                           <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="10" aria-valuemax="100" style="">
+                                                
+                                           </div>
+                                        </div>
+                                        <h3>85%</h3>	
+                                    </div>
+                                </div><!-- /.barWrapper -->
+                                <div class="barWrapper">
+                                    <span class="progressText">Emerging Markets</span>
+                                    <div class="single-progress-txt">
+                                        <div class="progress ">
+                                           <div class="progress-bar" role="progressbar" aria-valuenow="97" aria-valuemin="10" aria-valuemax="100" style="">
+                                               
+                                           </div>
+                                        </div>
+                                        <h3>97%</h3>	
+                                    </div>
+                                </div><!-- /.barWrapper -->
+                                <div class="barWrapper">
+                                    <span class="progressText">Fixed Income - Bonds, TIPS</span>
+                                    <div class="single-progress-txt">
+                                        <div class="progress ">
+                                           <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="10" aria-valuemax="100" style="">
+                                                
+                                           </div>
+                                        </div>
+                                        <h3>90%</h3>	
+                                    </div>
+                                </div><!-- /.barWrapper -->
+                                <div class="barWrapper">
+                                    <span class="progressText">REIT</span>
+                                    <div class="single-progress-txt">
+                                        <div class="progress ">
+                                           <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="10" aria-valuemax="100" style=""> 
+                                           </div>
+                                        </div>
+                                        <h3>90%</h3>	
+                                    </div>
+                                </div><!-- /.barWrapper -->
+                                <div class="barWrapper">
+                                    <span class="progressText">Commodities</span>
+                                    <div class="single-progress-txt">
+                                        <div class="progress ">
+                                           <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="10" aria-valuemax="100" style=""> 
+                                           </div>
+                                        </div>
+                                        <h3>90%</h3>	
+                                    </div>
+                                </div><!-- /.barWrapper -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="single-skill-content">
+                                <div class="barWrapper">
+                                    <span class="progressText">Business Development Companies</span>
+                                    <div class="single-progress-txt">
+                                        <div class="progress ">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="10" aria-valuemax="100" style=""> 
+                                            </div>
+                                        </div>
+                                        <h3>90%</h3>	
+                                    </div>
+                                </div><!-- /.barWrapper -->
+                                <div class="barWrapper">
+                                    <span class="progressText">Master Limited Partnerships</span>
+                                    <div class="single-progress-txt">
+                                        <div class="progress ">
+                                           <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="10" aria-valuemax="100" style=""> 
+                                           </div>
+                                        </div>
+                                        <h3>85%</h3>	
+                                    </div>
+                                </div><!-- /.barWrapper -->
+                                <div class="barWrapper">
+                                    <span class="progressText">Senior Loans, Covered Calls, Preferreds</span>
+                                    <div class="single-progress-txt">
+                                        <div class="progress ">
+                                           <div class="progress-bar" role="progressbar" aria-valuenow="97" aria-valuemin="10" aria-valuemax="100" style=""> 
+                                           </div>
+                                        </div>
+                                        <h3>97%</h3>	
+                                    </div>
+                                </div><!-- /.barWrapper -->
+                                <div class="barWrapper">
+                                    <span class="progressText">Technology</span>
+                                    <div class="single-progress-txt">
+                                        <div class="progress ">
+                                           <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="10" aria-valuemax="100" style=""> 
+                                           </div>
+                                        </div>
+                                        <h3>90%</h3>	
+                                    </div>
+                                </div><!-- /.barWrapper -->
+                                <div class="barWrapper">
+                                    <span class="progressText">Climate Change, green energy</span>
+                                    <div class="single-progress-txt">
+                                        <div class="progress ">
+                                           <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="10" aria-valuemax="100" style=""> 
+                                           </div>
+                                        </div>
+                                        <h3>90%</h3>	
+                                    </div>
+                                </div><!-- /.barWrapper -->
+                            </div>
+                        </div>
+                    </div><!-- /.row -->
+                </div>	<!-- /.container -->		
+            </div><!-- /.skill-content-->
+
+    </section><!--/.skills-->
+    <!--skills end -->
+
+
+    <!--experience start -->
+    <section id="experience" class="experience">
+        <div class="section-heading text-center">
+            <h2>features</h2>
+        </div>
+        <div class="container">
+            <div class="experience-content">
+                    <div class="main-timeline">
+                        <ul>
+                            <li>
+                                <div class="single-timeline-box fix">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="experience-time text-right">
+                                                <!-- <h2>REBALANCING</h2> --> 
+                                                <h3>rebalancing</h3>
+                                            </div><!--/.experience-time-->
+                                        </div><!--/.col-->
+                                        <div class="col-md-offset-1 col-md-5">
+                                            <div class="timeline">
+                                                <div class="timeline-content">
+                                                    <h4 class="title">
+                                                        <span><i class="fa fa-circle" aria-hidden="true"></i></span>
+                                                        Get precise trade instructions 
+                                                    </h4>
+                                                    <!--
+                                                    <h5>newyork, USA</h5>
+                                                    --> 
+                                                    <p class="description">
+                                                        Spread investments across growth and income for regular cash flow to be used for periodic rebalancing, minimizing the need to sell investments. 
+                                                    </p>
+                                                </div><!--/.timeline-content-->
+                                            </div><!--/.timeline-->
+                                        </div><!--/.col-->
+                                    </div>
+                                </div><!--/.single-timeline-box-->
+                            </li>
+
+                            <li>
+                                <div class="single-timeline-box fix">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="experience-time text-right">
+                                                <!-- <h2>REBALANCING</h2> --> 
+                                                <h3>diversification</h3>
+                                            </div><!--/.experience-time-->
+                                        </div><!--/.col-->
+                                        <div class="col-md-offset-1 col-md-5">
+                                            <div class="timeline">
+                                                <div class="timeline-content">
+                                                    <h4 class="title">
+                                                        <span><i class="fa fa-circle" aria-hidden="true"></i></span>
+                                                        core and satellite asset classes 
+                                                    </h4>
+                                                    <!--
+                                                    <h5>newyork, USA</h5>
+                                                    --> 
+                                                    <p class="description">
+                                                        BERIL emphasizes staying invested in low-cost index funds across various asset classes over long duration and focusses mainly on maintaining optimal allocation across all sectors. 
+                                                        <br> 
+                                                        <br> 
+                                                        Use core asset classes to build a solid foundation and satellite asset classes to stay on top of markets
+                                                    </p>
+                                                </div><!--/.timeline-content-->
+                                            </div><!--/.timeline-->
+                                        </div><!--/.col-->
+                                    </div>
+                                </div><!--/.single-timeline-box-->
+                            </li>
+
+                            <li>
+                                <div class="single-timeline-box fix">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="experience-time text-right">
+                                                <!-- <h2>REBALANCING</h2> --> 
+                                                <h3>tax loss harvesting</h3>
+                                            </div><!--/.experience-time-->
+                                        </div><!--/.col-->
+                                        <div class="col-md-offset-1 col-md-5">
+                                            <div class="timeline">
+                                                <div class="timeline-content">
+                                                    <h4 class="title">
+                                                        <span><i class="fa fa-circle" aria-hidden="true"></i></span>
+                                                        save on taxes 
+                                                    </h4>
+                                                    <!--
+                                                    <h5>newyork, USA</h5>
+                                                    --> 
+                                                    <p class="description">
+                                                        Minimize taxable gains by tracking loss making investments and be notified when to sell and buy back 
+                                                    </p>
+                                                </div><!--/.timeline-content-->
+                                            </div><!--/.timeline-->
+                                        </div><!--/.col-->
+                                    </div>
+                                </div><!--/.single-timeline-box-->
+                            </li>
+
+                            <li>
+                                <div class="single-timeline-box fix">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="experience-time text-right">
+                                                <!-- <h2>REBALANCING</h2> --> 
+                                                <h3>risk reporting</h3>
+                                            </div><!--/.experience-time-->
+                                        </div><!--/.col-->
+                                        <div class="col-md-offset-1 col-md-5">
+                                            <div class="timeline">
+                                                <div class="timeline-content">
+                                                    <h4 class="title">
+                                                        <span><i class="fa fa-circle" aria-hidden="true"></i></span>
+                                                        measure your performance
+                                                    </h4>
+                                                    <!--
+                                                    <h5>newyork, USA</h5>
+                                                    --> 
+                                                    <p class="description">
+                                                        Deep analysis of portfolio that are only available to institutional investors and hedge funds are made accessible to all investors. Various reports include attribution analysis, max drawdowns and various other greeks.
+                                                    </p>
+                                                </div><!--/.timeline-content-->
+                                            </div><!--/.timeline-->
+                                        </div><!--/.col-->
+                                    </div>
+                                </div><!--/.single-timeline-box-->
+                            </li>
+
+                            <li>
+                                <div class="single-timeline-box fix">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="experience-time text-right">
+                                                <!-- <h2>REBALANCING</h2> --> 
+                                                <h3>hands on</h3>
+                                            </div><!--/.experience-time-->
+                                        </div><!--/.col-->
+                                        <div class="col-md-offset-1 col-md-5">
+                                            <div class="timeline">
+                                                <div class="timeline-content">
+                                                    <h4 class="title">
+                                                        <span><i class="fa fa-circle" aria-hidden="true"></i></span>
+                                                        get used to trading 
+                                                    </h4>
+                                                    <!--
+                                                    <h5>newyork, USA</h5>
+                                                    --> 
+                                                    <p class="description">
+                                                        Mission of BERIL is to empower investors to take charge of their finances. It.s not a click and forget system. Our goal is to build guardrails so investors can trade and manage their position in a safe and secure environment knowing their risk is controlled.
+                                                    </p>
+                                                </div><!--/.timeline-content-->
+                                            </div><!--/.timeline-->
+                                        </div><!--/.col-->
+                                    </div>
+                                </div><!--/.single-timeline-box-->
+                            </li>
+                        </ul>
+                    </div><!--.main-timeline-->
+                </div><!--.experience-content-->
+        </div>
+    </section><!--/.experience-->
+    <!--experience end -->
+
+
+    <!--education start -->
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Login</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row">
+                    <form action="/auth/login" method="post">
+                        <p>
+                            <p><label for="">Email</label></p>
+                            <input type="email" name="username" value="{{ username }}" required>
+                        </p>
+                        <p>
+                            <p><label for="">Password</label></p>
+                            <input type="password" name="password" value="{{ password }}" required>
+                        </p>
+                        <input type="submit" value="Submit">
+                    </form>
+                </div> <!-- <div class="row"> --> 
+
+                <hr> 
+
+                <div class="row">
+                <div class="col-sm-4">
+                    <table id = 'hor-minimalist-a'>
+                        <thead> 
+                            <th colspan=2> Login </th> 
+                        </thead> 
+                        <tbody> 
+                        <tr> 
+                            <td> Username: </td> 
+                            <td><input type="text" id="userid" /></td>
+                        </tr> 
+                        <tr> 
+                            <td> Password: </td> 
+                            <td><input type="password" id="userpass" /></td>
+                        </tr> 
+                        <tr> 
+                            <td colspan="2" align="right" valign="bottom">
+                                <input type="submit" id="submit" value="Login" />
+                            </td>
+                        </tr> 
+                        </tbody> 
+                        <tfoot> 
+                            <th colspan=2> 
+                            <div id="txt"> 
+                            {% if user %} 
+                                You are logged in, private page is accessible
+                            {% else %} 
+                                You are NOT logged in
+                            {% endif %}
+                            </div>
+                            </th> 
+                        </tfoot> 
+                    </table>
+                </div> 
+                </div> 
+                </div> <!-- <div class="row"> --> 
+
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="single-horizontal-timeline">
+                            <div class="experience-time">
+                                <h2>2008 - 2010</h2>
+                                <h3>master <span>of </span> computer science</h3>
+                            </div><!--/.experience-time-->
+                            <div class="timeline-horizontal-border">
+                                <i class="fa fa-circle" aria-hidden="true"></i>
+                                <span class="single-timeline-horizontal"></span>
+                            </div>
+                            <div class="timeline">
+                                <div class="timeline-content">
+                                    <h4 class="title">
+                                        university of north carolina
+                                    </h4>
+                                    <h5>north carolina, USA</h5>
+                                    <p class="description">
+                                        Duis aute irure dolor in reprehenderit in vol patate velit esse cillum dolore eu fugiat nulla pari. Excepteur sint occana inna tecat cupidatat non proident. 
+                                    </p>
+                                </div><!--/.timeline-content-->
+                            </div><!--/.timeline-->
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="single-horizontal-timeline">
+                            <div class="experience-time">
+                                <h2>2004 - 2008</h2>
+                                <h3>bachelor <span>of </span> computer science</h3>
+                            </div><!--/.experience-time-->
+                            <div class="timeline-horizontal-border">
+                                <i class="fa fa-circle" aria-hidden="true"></i>
+                                <span class="single-timeline-horizontal"></span>
+                            </div>
+                            <div class="timeline">
+                                <div class="timeline-content">
+                                    <h4 class="title">
+                                        university of north carolina
+                                    </h4>
+                                    <h5>north carolina, USA</h5>
+                                    <p class="description">
+                                        Duis aute irure dolor in reprehenderit in vol patate velit esse cillum dolore eu fugiat nulla pari. Excepteur sint occana inna tecat cupidatat non proident. 
+                                    </p>
+                                </div><!--/.timeline-content-->
+                            </div><!--/.timeline-->
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="single-horizontal-timeline">
+                            <div class="experience-time">
+                                <h2>2004 - 2008</h2>
+                                <h3>bachelor <span>of </span> creative design</h3>
+                            </div><!--/.experience-time-->
+                            <div class="timeline-horizontal-border">
+                                <i class="fa fa-circle" aria-hidden="true"></i>
+                                <span class="single-timeline-horizontal spacial-horizontal-line
+                                "></span>
+                            </div>
+                            <div class="timeline">
+                                <div class="timeline-content">
+                                    <h4 class="title">
+                                        university of bolton
+                                    </h4>
+                                    <h5>bolton, united kingdome</h5>
+                                    <p class="description">
+                                        Duis aute irure dolor in reprehenderit in vol patate velit esse cillum dolore eu fugiat nulla pari. Excepteur sint occana inna tecat cupidatat non proident. 
+                                    </p>
+                                </div><!--/.timeline-content-->
+                            </div><!--/.timeline-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section><!--/.education-->
+    <!--education end -->
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<h1>Home page ..</h1>
+
+<p>Welcome to the home page.</p>
+
+{% if user %}
+    <h2>You are logged in :)</h2>
+    <p>
+        Hi {{ user.username }}! You are logged in, so you can access the private 
+        page. <a href="/private">here</a>!
+    </p>
+{% else %}
+    <h2>You are NOT logged in :(</h2>
+    <p>
+        Hello stranger. You are not logged. Please follow the link to
+        <a href="/auth/login" class="btn">login</a>!
+    </p>
+{% endif %}
+
+<hr>
+{% include '_site_map.html' %}
+{% endblock %} {# content #}
+
+{% block scripted %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#submit').jqxButton({ 
+            width: '160px',
+            height: '25px',
+            theme: 'ui-smoothness'
+        });
+        $('#userid, #userpass').jqxInput({ 
+            width: '300px',
+            height: '25px',
+            theme: 'ui-smoothness'
+        });
+        $('#submit').click(function () {
+            console.log("kya baat");
+            axios({
+                method: 'post',
+                url: 'auth/login/v1',
+                config: { headers: {'Content-Type': 'multipart/form-data' }},
+                headers: { 'Content-type': 'application/json' },
+                data: JSON.stringify({userid: $("#userid").val(), passwd: $("#userpass").val()})
+            })
+            .then((response) => {
+                console.log(response.data.data);
+                document.getElementById('txt').innerHTML=response.data.data;
+            })
+            .catch((error) => {
+                console.log(error.response.data.detail); 
+                document.getElementById('txt').innerHTML=error.response.data.detail;
+            });
+        });
+    });
+</script>
+{% endblock %}
+
+
