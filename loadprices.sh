@@ -1,0 +1,3 @@
+echo loading prices....
+/usr/bin/curl -X PUT -H "Content-Type: application/json" -d '{"symbol":"NMZ"}' http://localhost:8000/folio/prices/v1
+
