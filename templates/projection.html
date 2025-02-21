@@ -1,0 +1,96 @@
+{% extends "private3.html" %}  
+
+{% block metrics %}
+    <div style="padding:5px;">
+        <div style="padding-left:50px;"> 
+            <input type="button" id="btn_fetchfut" value="Fetch"/>
+        </div> 
+        <table id='hor-minimalist-a'> 
+            <thead> <th colspan=2>Future Value Projection</th> </thead> 
+            <tbody> 
+            <tr> 
+                <td>Holding Period (in years):</td> 
+                <td align='right'><div id="id_proj_hold"></div></td>
+            </tr> 
+            <tr> 
+                <td>Annual Interest Rate:</td> 
+                <td align='right'><div id="id_proj_intrate"></div></td>
+            </tr> 
+            <tr> 
+                <td>Monthly Deposit:</td> 
+                <td align='right'><div id="id_proj_mlydep"></div></td>
+            </tr> 
+            <tr> 
+                <td>Future Value(FV):</td> 
+                <td align='right'><div id="id_proj_fv"></div></td>
+            </tr> 
+            </tbody> 
+        </table> 
+    </div>
+{% endblock %} {# metrics #}
+
+{% block scripted %}
+<script rel="javascript" type="text/javascript">
+$(document).ready(function () {
+    $("#id_proj_intrate").jqxNumberInput({ 
+        width: '125px', 
+        height: '25px', 
+        digits: 3, 
+        symbolPosition: 'right', 
+        symbol: '%', 
+        spinButtons: true 
+    });
+    $('#id_proj_intrate').jqxNumberInput('val', 6.00);
+    $("#id_proj_mlydep").jqxNumberInput({ 
+        width: '125px', 
+        height: '25px', 
+        digits: 5, 
+        symbol: '$', 
+        spinButtons: true 
+    });
+    $('#id_proj_mlydep').jqxNumberInput('val', 500.00);
+    $("#id_proj_hold").jqxNumberInput({ 
+        width: '125px', 
+        height: '25px', 
+        digits: 3, 
+        spinButtons: true 
+    });
+    $('#id_proj_hold').jqxNumberInput('val', 10.00);
+
+    $("#btn_fetchfut").jqxButton({ width: '320px', height: '25px', theme: 'ui-smoothness' });
+    $('#btn_fetchfut').click(function(){
+        globalfolio = sessionStorage.getItem('globalfolio');
+        accesstoken = sessionStorage.getItem('accesstoken');
+        proj_hold = $("#id_proj_hold").jqxNumberInput('getDecimal')
+        proj_intrate = $("#id_proj_intrate").jqxNumberInput('getDecimal')
+        proj_mlydep = $("#id_proj_mlydep").jqxNumberInput('getDecimal')
+        args = 
+            "folioname=" + globalfolio +
+            "&hold=" + proj_hold + 
+            "&intrate=" + proj_intrate + 
+            "&mlydep=" + proj_mlydep; 
+        axios({
+            method: 'get',
+            url:  "/folio/projection/v1?" + args,
+            config: { 
+                headers: {'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + accesstoken 
+            }},
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accesstoken 
+            }
+        })
+        .then((response) => {
+            let USDollar = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+            });
+            document.getElementById('id_proj_fv').innerHTML = USDollar.format(response.data.data) ;
+        })
+        .catch((error) => {
+        });
+    });
+});
+</script>
+{% endblock %} {# scripted #}

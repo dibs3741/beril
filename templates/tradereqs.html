@@ -1,0 +1,81 @@
+{% extends "private3.html" %}  
+
+{% block metrics %}
+    <div style="padding:50px;">
+        <div id="id_tradereq"></div> 
+    </div>
+{% endblock %} {# metrics #}
+
+{% block scripted %}
+<script rel="javascript" type="text/javascript">
+$(document).ready(function () {
+    $("#id_tradereq").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '700',
+        showtoolbar: true,
+        rendertoolbar: function (statusbar) {
+            var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
+            var reloadButton   = $(" \
+                <div style='float:left; margin-left:1px;'> \
+                <img style='position:relative; margin-top:1px; width:20px; height:20px;' src=\"{{ url_for('static', path='/img/refresh.png') }}\" /> \
+                <span style='margin-left: 5px; position: relative; top: -1px;'>Fetch</span> </div>");
+            container.append(reloadButton);
+            statusbar.append(container);
+            reloadButton.jqxButton({ theme: 'ui-smoothness', width: 75, height: 20 });
+            reloadButton.click(function (event) {
+                globalfolio = sessionStorage.getItem('globalfolio');
+                var url = "/folio/tradereq/v1?folioname=" + globalfolio;
+                var source = {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'symbol', type:'string'},
+                        { name: 'side', type:'string'},
+                        { name: 'qty', type:'number'},
+                        { name: 'asofdate', type:'string'},
+                        { name: 'quantity', type:'number'},
+                        { name: 'account', type:'string'}
+                    ],
+                    id: 'ident',
+                    cache: false,
+                    type : 'GET',
+                    pagesize: 20,
+                    url: url,
+                    root: 'data',
+                    updaterow: function (rowid, rowdata, commit) {
+                    }
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source, {
+                    beforeSend: function (jqxhr, settings) { 
+                       accesstoken = sessionStorage.getItem('accesstoken');
+                       jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                    },
+                    downloadComplete: function (data, status, xhr) { 
+                       console.log(xhr); 
+                    },
+                    loadError(xhr, status, error) {
+                       console.log(status); 
+                       console.log(error); 
+                    }
+                });
+                $("#id_tradereq").jqxGrid({ source: dataAdapter });
+            });
+        },
+        renderstatusbar: function(statusbar) {
+        },
+        ready: function () {
+        },
+        columns: [
+            { text: 'Symbol', dataField: 'symbol', width: 100, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Side', dataField: 'side', width: 100, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Quantity', dataField: 'qty', width: 100, cellsalign: 'right',  cellsformat: 'n0'},
+            { text: 'Last Traded', dataField: 'asofdate', width: 100, cellsalign: 'center',  cellsformat: 's'},
+            { text: 'Direction', dataField: 'quantity', width: 100, cellsalign: 'right',  cellsformat: 'n0'},
+            { text: 'Folio', dataField: 'account', width: 200, cellsalign: 'left',  cellsformat: 's'}
+        ]
+    });
+});
+</script>
+{% endblock %} {# scripted #}

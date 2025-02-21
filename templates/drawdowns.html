@@ -1,0 +1,86 @@
+{% extends "private3.html" %}  
+
+{% block metrics %}
+    <div style="padding:50px;">
+        <div id="id_drawdowns"></div> 
+    </div>
+{% endblock %} {# metrics #}
+
+{% block scripted %}
+<script rel="javascript" type="text/javascript">
+$(document).ready(function () {
+    $("#id_drawdowns").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        columnsheight:75,
+        autoheight: true,
+        width: '980',
+        showtoolbar: true,
+        rendertoolbar: function (statusbar) {
+            var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
+            var reloadButton   = $(" \
+                <div style='float:left; margin-left:1px;'> \
+                <img style='position:relative; margin-top:1px; width:20px; height:20px;' src=\"{{ url_for('static', path='/img/refresh.png') }}\" /> \
+                <span style='margin-left: 5px; position: relative; top: -1px;'>Fetch</span> </div>");
+            container.append(reloadButton);
+            statusbar.append(container);
+            reloadButton.jqxButton({ theme: 'ui-smoothness', width: 75, height: 20 });
+            reloadButton.click(function (event) {
+                globalfolio = sessionStorage.getItem('globalfolio');
+                var url = "/folio/drawdowns/v1?folioname=" + globalfolio;
+                var source = {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'start', type:'date'},
+                        { name: 'end', type:'date'},
+                        { name: 'length', type:'number'},
+                        { name: 'drawdown', type:'number'},
+                        { name: 'trough', type:'date'},
+                        { name: 'daysToTrough', type:'number'},
+                        { name: 'daysInRecovery', type:'number'},
+                        { name: 'pctRecovery', type:'number'},
+                        { name: 'pctRecoveryRemaining', type:'number'}
+                    ],
+                    id: 'ident',
+                    cache: false,
+                    type : 'GET',
+                    pagesize: 20,
+                    url: url,
+                    root: 'data',
+                    updaterow: function (rowid, rowdata, commit) {
+                    }
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source, {
+                    beforeSend: function (jqxhr, settings) { 
+                       accesstoken = sessionStorage.getItem('accesstoken');
+                       jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                    },
+                    downloadComplete: function (data, status, xhr) { 
+                       console.log(xhr); 
+                    }
+                });
+                $("#id_drawdowns").jqxGrid({ source: dataAdapter });
+            });
+        },
+        renderstatusbar: function(statusbar) {
+        },
+        ready: function () {
+        },
+        columns: [
+            { text: 'Start', dataField: 'start', width: 100, cellsalign: 'center',  cellsformat: 'yyyy-MM-dd'},
+            { text: 'End', dataField: 'end', width: 100, cellsalign: 'center',  cellsformat: 'yyyy-MM-dd'},
+            { text: 'Length', dataField: 'length', width: 75, cellsalign: 'right',  cellsformat: 'n'},
+            { text: 'Drawdown', dataField: 'drawdown', width: 85, cellsalign: 'right',  cellsformat: 'p2'},
+            { text: 'Trough', dataField: 'trough', width: 100, cellsalign: 'center',  cellsformat: 'yyyy-MM-dd'},
+            { text: 'Days to Trough', dataField: 'daysToTrough', width: 120, cellsalign: 'right',  cellsformat: 'n'},
+            { text: 'Days In <br>Recovery', dataField: 'daysInRecovery', width: 120, cellsalign: 'right',  cellsformat: 'n'},
+            { text: 'Recovery(%)', dataField: 'pctRecovery', width: 120, cellsalign: 'right',  cellsformat: 'p2'},
+            { text: 'Recovery(%) <br>Remaining', dataField: 'pctRecoveryRemaining', width: 120, cellsalign: 'right',  cellsformat: 'p2'}
+        ]
+    });
+
+
+});
+</script>
+{% endblock %} {# scripted #}

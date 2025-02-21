@@ -11,11 +11,11 @@
 
 <div id='jqxNavigationBar' class="center">
     <!--Header-->
-    <div style="padding:5px;">
+    <div>
         Login/Register 
     </div>
     <!--Content-->
-    <div style="padding:5px;">
+    <div>
         <table id = 'hor-minimalist-a'>
             <thead> 
                 <th colspan=2> Login </th> 
@@ -51,182 +51,288 @@
             </tfoot> 
         </table> <!-- <table id = 'hor-minimalist-a'> --> 
     </div>
-
     <!--Header-->
-    <div style="padding:5px;">
+    <div>
         Portfolio Selection
     </div>
     <!--Content-->
-    <div style="padding:5px;">
+    <div>
         <div class="col-sm-2">
             <div id='id_folio'> </div>
-            <br>
-            Cash Equivalents:
-            <div id="id_cash_equivalent"></div> 
         </div> <!-- <div class="col-sm-4"> --> 
         <div class="col-sm-6">
             <div id="id_asset_allocation"></div> 
         </div> <!-- <div class="col-sm-4"> --> 
-    </div>
-
-    <!--Header-->
-    <div style="padding:5px;">
-        Portfolio Divergence From Model 
-    </div>
-    <!--Content-->
-    <div style="padding:5px;">
-        <div id="id_dashboard"></div> 
-    </div>
-
-    <!--Header-->
-    <div style="padding:5px;">
-        Position details
-    </div>
-    <!--Content-->
-    <div style="padding:5px;">
-        <div id="id_position_latest"></div> 
-    </div>
-
-    <!--Header-->
-    <div style="padding:5px;">
-        Trade Requirements for Rebalancing Portfolio
-    </div>
-    <!--Content-->
-    <div style="padding:5px;">
-        <div id="id_tradereq"></div> 
-    </div>
-
-    <!--Header-->
-    <div style="padding:5px;">
-        Drawdown Periods
-    </div>
-    <!--Content-->
-    <div style="padding:5px;">
-        <div id="id_drawdowns"></div> 
-    </div>
-
-    <!--Header-->
-    <div style="padding:5px;">
-        Risk Metrics
-    </div>
-    <!--Content-->
-    <div style="padding:5px;">
-        <div> 
-            <input type="button" id="swap_load" value="Fetch"/>
-        </div> 
-        <div> 
-        <table id='hor-minimalist-a'> 
-            <thead> <th colspan=2>Risk Metrics</th> </thead> 
-            <tbody> 
-            <tr> 
-                <td>Volatility:</td> 
-                <td align='right'><div id="id_volatility"></div></td>
-            </tr> 
-            <tr> 
-                <td>Correlation</td> 
-                <td align='right'><div id="id_correlation"></div></td>
-                <!-- <td><input type="text" id="strategy"/></td> --> 
-            </tr> 
-            <tr> 
-                <td>CAGR</td> 
-                <td align='right'><div id="id_cagr"></div></td>
-            </tr> 
-            <tr> 
-                <td>Tracking Error</td> 
-                <td align='right'><div id="id_trackerr"></div></td>
-            </tr> 
-            <tr> 
-                <td>Average Return of Positive Months</td> 
-                <td align='right'><div id="id_avg_ret_pos_mths"></div></td>
-            </tr> 
-            <tr> 
-                <td>Average Return of Negative Months</td> 
-                <td align='right'><div id="id_avg_ret_neg_mths"></div></td>
-            </tr> 
-            <tr> 
-                <td>Max Drawdown</td> 
-                <td align='right'><div id="id_max_drawdown"></div></td>
-            </tr> 
-            <tr> 
-                <td>Sharpe Ratio</td> 
-                <td align='right'><div id="id_sharpe_ratio"></div></td>
-            </tr> 
-            <tr> 
-                <td>Sortino Ratio</td> 
-                <td align='right'><div id="id_sortino_ratio"></div></td>
-            </tr> 
-            <tr> 
-                <td>Value at Risk(95%, covariance)</td> 
-                <td align='right'><div id="id_var95_covariance"></div></td>
-            </tr> 
-            <tr> 
-                <td>Value at Risk(95%, historical)</td> 
-                <td align='right'><div id="id_var95_historical"></div></td>
-            </tr> 
-            </tbody> 
-        </table> 
-        </div> 
-    </div>
-
-    <!--Header-->
-    <div style="padding:5px;">
-        Future Value Projection
-    </div>
-    <!--Content-->
-    <div style="padding:5px;">
-        <div> 
-            <input type="button" id="btn_fetchfut" value="Fetch"/>
-        </div> 
-        <table id='hor-minimalist-a'> 
-            <thead> <th colspan=2>Future Value Projection</th> </thead> 
-            <tbody> 
-            <tr> 
-                <td>Holding Period (in years):</td> 
-                <td align='right'><div id="id_proj_hold"></div></td>
-            </tr> 
-            <tr> 
-                <td>Annual Interest Rate:</td> 
-                <td align='right'><div id="id_proj_intrate"></div></td>
-            </tr> 
-            <tr> 
-                <td>Monthly Deposit:</td> 
-                <td align='right'><div id="id_proj_mlydep"></div></td>
-            </tr> 
-            <tr> 
-                <td>Future Value(FV):</td> 
-                <td align='right'><div id="id_proj_fv"></div></td>
-            </tr> 
-            </tbody> 
-        </table> 
-    </div>
-
-    <!--Header-->
-    <div style="padding:5px;">
-        Income and Returns
-    </div>
-    <!--Content-->
-    <div style="padding:5px;">
-        <div> 
-            <input type="button" id="btn_fetchIncome" value="Fetch"/>
-        </div> 
-        <div id='jqxTabs'>
-            <ul>
-                <li>Monthly</li>
-                <li>Yearly</li>
-            </ul> 
-            <div><div id="idMlyIncomReturnGrid"></div></div> 
-            <div><div id="idYlyIncomReturnGrid"></div></div> 
-        </div> 
-    </div>
-
-    <!--Header-->
-    <div style="padding:5px;">
-        Attribution
-    </div>
-    <div style="padding:5px;">
-        <div id="id_attribution1"></div> 
+        <div class="col-sm-4">
+            <p> 
+            Cash Equivalents:
+            <div id="id_cash_equivalent"></div> 
+            </p> 
+        </div> <!-- <div class="col-sm-4"> --> 
     </div>
 </div> <!-- <div id='jqxNavigationBar'> --> 
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Login</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <!--
+                    <table id = 'hor-minimalist-a'>
+                        <thead> 
+                            <th colspan=2> Login </th> 
+                        </thead> 
+                        <tbody> 
+                        <tr> 
+                            <td> Username (email): </td> 
+                            <td><input type="text" id="userid" /></td>
+                        </tr> 
+                        <tr> 
+                            <td> Password: </td> 
+                            <td><input type="password" id="userpass" /></td>
+                        </tr> 
+                        <tr> 
+                            <td> </td> 
+                            <td> </td> 
+                        </tr> 
+                        <tr> 
+                            <td align="left" valign="bottom"> 
+                                <input type="button" id="register" value="Register" />
+                            </td>
+                            <td align="right" valign="bottom"> 
+                                <input type="button" id="submit1" value="Login" />
+                            </td>
+                        </tr> 
+                        </tbody> 
+                        <tfoot> 
+                            <th colspan=2> 
+                            <div id="txt"> 
+                            </div>
+                            </th> 
+                        </tfoot> 
+                    </table> 
+                    --> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Portfolio Selection</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <div class="col-sm-2">
+                        <div id='id_folio'> </div>
+                    </div> <!-- <div class="col-sm-4"> --> 
+                    <div class="col-sm-6">
+                        <div id="id_asset_allocation"></div> 
+                    </div> <!-- <div class="col-sm-4"> --> 
+                    <div class="col-sm-4">
+                        <p> 
+                        Cash Equivalents:
+                        <div id="id_cash_equivalent"></div> 
+                        </p> 
+                    </div> <!-- <div class="col-sm-4"> --> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <!--education start -->
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Portfolio Divergence From Model</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <div id="id_dashboard"></div> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+    <!--education end -->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Position details</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <div id="id_position_latest"></div> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Trade Requirements for Rebalancing Portfolio</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <div id="id_tradereq"></div> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Drawdown Periods</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <div id="id_drawdowns"></div> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Risk Metrics</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div> 
+                    <input type="button" id="swap_load" value="Fetch"/>
+                </div> 
+                <div class="row"> 
+                    <table id='hor-minimalist-a'> 
+                        <thead> <th colspan=2>Risk Metrics</th> </thead> 
+                        <tbody> 
+                        <tr> 
+                            <td>Volatility:</td> 
+                            <td align='right'><div id="id_volatility"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Correlation</td> 
+                            <td align='right'><div id="id_correlation"></div></td>
+                            <!-- <td><input type="text" id="strategy"/></td> --> 
+                        </tr> 
+                        <tr> 
+                            <td>CAGR</td> 
+                            <td align='right'><div id="id_cagr"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Tracking Error</td> 
+                            <td align='right'><div id="id_trackerr"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Average Return of Positive Months</td> 
+                            <td align='right'><div id="id_avg_ret_pos_mths"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Average Return of Negative Months</td> 
+                            <td align='right'><div id="id_avg_ret_neg_mths"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Max Drawdown</td> 
+                            <td align='right'><div id="id_max_drawdown"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Sharpe Ratio</td> 
+                            <td align='right'><div id="id_sharpe_ratio"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Sortino Ratio</td> 
+                            <td align='right'><div id="id_sortino_ratio"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Value at Risk(95%, covariance)</td> 
+                            <td align='right'><div id="id_var95_covariance"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Value at Risk(95%, historical)</td> 
+                            <td align='right'><div id="id_var95_historical"></div></td>
+                        </tr> 
+                        </tbody> 
+                    </table> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Future Value Projection</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div> 
+                    <input type="button" id="btn_fetchfut" value="Fetch"/>
+                </div> 
+                <div class="row"> 
+                    <table id='hor-minimalist-a'> 
+                        <thead> <th colspan=2>Future Value Projection</th> </thead> 
+                        <tbody> 
+                        <tr> 
+                            <td>Holding Period (in years):</td> 
+                            <td align='right'><div id="id_proj_hold"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Annual Interest Rate:</td> 
+                            <td align='right'><div id="id_proj_intrate"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Monthly Deposit:</td> 
+                            <td align='right'><div id="id_proj_mlydep"></div></td>
+                        </tr> 
+                        <tr> 
+                            <td>Future Value(FV):</td> 
+                            <td align='right'><div id="id_proj_fv"></div></td>
+                        </tr> 
+                        </tbody> 
+                    </table> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Income and Returns</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div> 
+                    <input type="button" id="btn_fetchIncome" value="Fetch"/>
+                </div> 
+                <div class="row"> 
+                    <div id='jqxTabs'>
+                        <ul>
+                            <li>Monthly</li>
+                            <li>Yearly</li>
+                        </ul> 
+                        <div><div id="idMlyIncomReturnGrid"></div></div> 
+                        <div><div id="idYlyIncomReturnGrid"></div></div> 
+                    </div> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
+
+    <section id="education" class="education">
+        <div class="section-heading text-center">
+            <h2>Attribution</h2>
+        </div>
+        <div class="container">
+            <div class="education-horizontal-timeline">
+                <div class="row"> 
+                    <div id="id_attribution1"></div> 
+                </div> <!-- <div class="row"> --> 
+            </div>
+        </div> <!-- class="container" --> 
+    </section><!--/.education-->
 
 {% endblock %} {# content #}
 
@@ -550,9 +656,8 @@ $(document).ready(function () {
         theme: 'ui-smoothness',
         altrows: true,
         rowsheight: 20,
-        columnsheight:45,
         autoheight: true,
-        width: '980',
+        width: '1200',
         showtoolbar: true,
         rendertoolbar: function (statusbar) {
             var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
@@ -605,13 +710,13 @@ $(document).ready(function () {
         columns: [
             { text: 'Start', dataField: 'start', width: 100, cellsalign: 'center',  cellsformat: 'yyyy-MM-dd'},
             { text: 'End', dataField: 'end', width: 100, cellsalign: 'center',  cellsformat: 'yyyy-MM-dd'},
-            { text: 'Length', dataField: 'length', width: 75, cellsalign: 'right',  cellsformat: 'n'},
-            { text: 'Drawdown', dataField: 'drawdown', width: 85, cellsalign: 'right',  cellsformat: 'p2'},
+            { text: 'Length', dataField: 'length', width: 100, cellsalign: 'right',  cellsformat: 'n'},
+            { text: 'Drawdown', dataField: 'drawdown', width: 100, cellsalign: 'right',  cellsformat: 'p2'},
             { text: 'Trough', dataField: 'trough', width: 100, cellsalign: 'center',  cellsformat: 'yyyy-MM-dd'},
-            { text: 'Days to Trough', dataField: 'daysToTrough', width: 120, cellsalign: 'right',  cellsformat: 'n'},
-            { text: 'Days In <br>Recovery', dataField: 'daysInRecovery', width: 120, cellsalign: 'right',  cellsformat: 'n'},
-            { text: 'Recovery(%)', dataField: 'pctRecovery', width: 120, cellsalign: 'right',  cellsformat: 'p2'},
-            { text: 'Recovery(%) <br>Remaining', dataField: 'pctRecoveryRemaining', width: 120, cellsalign: 'right',  cellsformat: 'p2'}
+            { text: 'Days to Traugh', dataField: 'daysToTrough', width: 100, cellsalign: 'right',  cellsformat: 'n'},
+            { text: 'Days In Recovery', dataField: 'daysInRecovery', width: 100, cellsalign: 'right',  cellsformat: 'n'},
+            { text: 'Percent Recovery', dataField: 'pctRecovery', width: 100, cellsalign: 'right',  cellsformat: 'p2'},
+            { text: 'Percent Recovery Remaining', dataField: 'pctRecoveryRemaining', width: 100, cellsalign: 'right',  cellsformat: 'p2'}
         ]
     });
 
@@ -789,7 +894,7 @@ $(document).ready(function () {
 
     $('#jqxTabs').jqxTabs({
         width: 800,
-        height: 300,
+        height: 500,
         position: 'top',
         initTabContent: initWidgets,
         theme: 'ui-smoothness'
@@ -944,12 +1049,7 @@ $(document).ready(function () {
     });
 
     //--- section: navigation bar wrapper --- 
-    $("#jqxNavigationBar").jqxNavigationBar({ 
-        width: 950, 
-        height: 780, 
-        theme: 'ui-smoothness',
-        expandMode: 'toggle'
-    });
+    $("#jqxNavigationBar").jqxNavigationBar({ width: 800, height: 580, expandMode: 'toggle'});
 });
 </script>
 {% endblock %} {# scripted #}

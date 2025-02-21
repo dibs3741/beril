@@ -5,5 +5,6 @@ from
 where
    username =  %(username)s and 
    folioname = %(folioname)s and 
-   symbol not in ('SHV', 'SHY', 'EIPI') 
+   symbol not in ('SHV', 'SHY') and
+   not (symbol = 'EIPI' and folioname = '401kb')
 

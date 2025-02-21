@@ -1,0 +1,114 @@
+{% extends "private3.html" %}  
+
+{% block metrics %}
+    <div style="padding:50px;">
+        <div id='id_folio'> </div>
+        <br>
+        Cash Equivalents:
+        <div id="id_cash_equivalent"></div> 
+        <div id="id_asset_allocation"></div> 
+    </div>
+{% endblock %} {# metrics #}
+
+{% block scripted %}
+<script rel="javascript" type="text/javascript">
+$(document).ready(function () {
+    $('#id_folio').jqxListBox({ 
+        width: '75px',
+        height: '100px',
+        displayMember: "folio_name", 
+        valueMember: "folio_name",
+        theme: 'ui-smoothness'
+    });
+    var url = "/folios/v1";
+    var source = {
+        datatype: "json",
+        datafields: [
+            { name: 'folio_name' }
+        ],
+        id: 'id',
+        type : 'GET',
+        root: 'data',
+        url: url
+    };
+    var dataAdapter = new $.jqx.dataAdapter(source, {
+        beforeSend: function (jqxhr, settings) { 
+           accesstoken = sessionStorage.getItem('accesstoken');
+           jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+        },
+        downloadComplete: function (data, status, xhr) { 
+           console.log(xhr); 
+        }
+    });
+    $('#id_folio').jqxListBox({ 
+        source: dataAdapter
+    })
+    $("#id_folio").on('select', function (event) {
+    })
+
+    $("#id_asset_allocation").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '500',
+        showaggregates: true,
+        showstatusbar: true,
+        statusbarheight: 30,
+        columns: [
+            { text: 'Asset Class', dataField: 'assetclass', width: 400, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Allocation', dataField: 'allocated', width: 100, cellsalign: 'right',  cellsformat: 'p0', aggregates:['sum']}
+        ]
+    });
+
+    $("#id_folio").on('select', function (event) {
+        if (event.args) {
+            var item = event.args.item;
+            if (item) {
+                sessionStorage.setItem('globalfolio', item.value);
+                globalfolio = item.value;
+                console.log("selected folio: " + globalfolio);
+                var url = "/folio/allocation/v1?folioname=" + globalfolio;
+                var source = {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'assetclass', type:'string'},
+                        { name: 'allocated', type:'number'}
+                    ],
+                    id: 'ident',
+                    type : 'GET',
+                    url: url,
+                    root: 'data'
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source, {
+                    beforeSend: function (jqxhr, settings) { 
+                       jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                    },
+                    downloadComplete: function (data, status, xhr) { 
+                       console.log(xhr); 
+                    }
+                });
+                $("#id_asset_allocation").jqxGrid({ source: dataAdapter });
+                axios({
+                    method: 'get',
+                    url:  "/folio/cash/v1?folioname=" + globalfolio,
+                    config: { 
+                        headers: {'Content-Type': 'multipart/form-data',
+                        'Authorization': 'Bearer ' + accesstoken 
+                    }},
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + accesstoken 
+                    }
+                })
+                .then((response) => {
+                    document.getElementById('id_cash_equivalent').innerHTML = (response.data.data * 100).toFixed(2) + "%";
+                })
+                .catch((error) => {
+                });
+            }
+        }
+    });
+});
+</script>
+{% endblock %} {# scripted #}

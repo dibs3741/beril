@@ -1,0 +1,77 @@
+{% extends "private3.html" %}  
+
+{% block metrics %}
+    <div style="padding:50px;">
+        <div id="id_attribution1"></div> 
+    </div>
+{% endblock %} {# metrics #}
+
+{% block scripted %}
+<script rel="javascript" type="text/javascript">
+$(document).ready(function () {
+    //--- section: attribution report --- 
+    $("#id_attribution1").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '400',
+        showtoolbar: true,
+        showaggregates: true,
+        showstatusbar: true,
+        statusbarheight: 30,
+        rendertoolbar: function (statusbar) {
+            var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
+            var reloadButton   = $(" \
+                <div style='float:left; margin-left:1px;'> \
+                <img style='position:relative; margin-top:1px; width:20px; height:20px;' src=\"{{ url_for('static', path='/img/refresh.png') }}\" /> \
+                <span style='margin-left: 5px; position: relative; top: -1px;'>Fetch</span> </div>");
+            container.append(reloadButton);
+            statusbar.append(container);
+            reloadButton.jqxButton({ theme: 'ui-smoothness', width: 75, height: 20 });
+            reloadButton.click(function (event) {
+                globalfolio = sessionStorage.getItem('globalfolio');
+                accesstoken = sessionStorage.getItem('accesstoken');
+                var url = "/folio/attribution/v1?folioname=" + globalfolio;
+                var source = {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'symbol', type:'string'},
+                        { name: '202410', type:'string'},
+                        { name: '202411', type:'string'},
+                        { name: '202412', type:'string'}
+                    ],
+                    id: 'ident',
+                    cache: false,
+                    type : 'GET',
+                    pagesize: 20,
+                    url: url,
+                    root: 'data',
+                    updaterow: function (rowid, rowdata, commit) {
+                    }
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source, {
+                    beforeSend: function (jqxhr, settings) { 
+                       jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                    },
+                    downloadComplete: function (data, status, xhr) { 
+                       console.log(xhr); 
+                    }
+                });
+                $("#id_attribution1").jqxGrid({ source: dataAdapter });
+            });
+        },
+        renderstatusbar: function(statusbar) {
+        },
+        ready: function () {
+        },
+        columns: [
+            { text: 'Symbol', dataField: 'symbol', width: 100, cellsalign: 'left',  cellsformat: 's'},
+            { text: '202410', dataField: '202410', width: 100, cellsalign: 'right',  cellsformat: 'p2', aggregates:['sum']},
+            { text: '202411', dataField: '202411', width: 100, cellsalign: 'right',  cellsformat: 'p2', aggregates:['sum']},
+            { text: '202412', dataField: '202412', width: 100, cellsalign: 'right',  cellsformat: 'p2', aggregates:['sum']}
+        ]
+    });
+});
+</script>
+{% endblock %} {# scripted #}

@@ -1,0 +1,76 @@
+{% extends "private3.html" %}  
+
+{% block metrics %}
+    <div style="padding:50px;">
+        <div id="id_position_latest"></div> 
+    </div>
+{% endblock %} {# metrics #}
+
+{% block scripted %}
+<script rel="javascript" type="text/javascript">
+$(document).ready(function () {
+    $("#id_position_latest").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        showaggregates: true,
+        showstatusbar: true,
+        statusbarheight: 30,
+        showtoolbar: true,
+        rendertoolbar: function (statusbar) {
+            var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
+            var reloadButton   = $(" \
+                <div style='float:left; margin-left:1px;'> \
+                <img style='position:relative; margin-top:1px; width:20px; height:20px;' src=\"{{ url_for('static', path='/img/refresh.png') }}\" /> \
+                <span style='margin-left: 5px; position: relative; top: -1px;'>Fetch</span> </div>");
+            container.append(reloadButton);
+            statusbar.append(container);
+            reloadButton.jqxButton({ theme: 'ui-smoothness', width: 75, height: 20 });
+            reloadButton.click(function (event) {
+                globalfolio = sessionStorage.getItem('globalfolio');
+                var url = "/position/latest/v1?folioname=" + globalfolio;
+                var source = {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'symbol', type:'string'},
+                        { name: 'notional', type:'number'},
+                        { name: 'last_px', type:'number'},
+                        { name: 'description', type:'string'}
+                    ],
+                    id: 'ident',
+                    cache: false,
+                    type : 'GET',
+                    pagesize: 20,
+                    url: url,
+                    root: 'data',
+                    updaterow: function (rowid, rowdata, commit) {
+                    }
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source, {
+                    beforeSend: function (jqxhr, settings) { 
+                       accesstoken = sessionStorage.getItem('accesstoken');
+                       jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                    },
+                    downloadComplete: function (data, status, xhr) { 
+                       console.log(xhr); 
+                    }
+                });
+                $("#id_position_latest").jqxGrid({ source: dataAdapter });
+            });
+        },
+        renderstatusbar: function(statusbar) {
+        },
+        ready: function () {
+        },
+        columns: [
+            { text: 'Symbol', dataField: 'symbol', width: 100, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Notional', dataField: 'notional', width: 100, cellsalign: 'right',  cellsformat: 'c0', aggregates:['sum']},
+            { text: 'Last Price', dataField: 'last_px', width: 100, cellsalign: 'right',  cellsformat: 'c2'},
+            { text: 'Description', dataField: 'description', width: 300, cellsalign: 'left',  cellsformat: 's'}
+        ]
+    });
+
+});
+</script>
+{% endblock %} {# scripted #}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% block head %}
+    <title>Dashboard Sidebar Menu</title> 
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {# #}
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+    <link rel="stylesheet" href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css'>
+    {# #}
+    <link href="{{ url_for('static', path='/expresstable.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', path='/jqwidgets/jqwidgets/styles/jqx.base.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', path='/jqwidgets/jqwidgets/styles/jqx.ui-smoothness.css') }}" rel="stylesheet" type="text/css">
+{% endblock %} {# head #}
+
+<body>
+{% block content %}
+    <nav class="sidebar open">
+        <header>
+            <div class="image-text">
+                <span class="image">
+                    <img src="{{ url_for('static', path="212918345.png") }}" alt="">
+                </span>
+
+                <div class="text logo-text">
+                    <span class="name">BERILSOFT</span>
+                    <span class="profession">Software Services</span>
+                </div>
+            </div>
+
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
+        <div class="menu-bar">
+            <div class="menu">
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="/private3">
+                            <i class='bx bx-home-alt icon' ></i>
+                            <span class="text nav-text">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="/logmein/v1">
+                            <i class='bx bx-log-in icon' ></i>
+                            <span class="text nav-text">Login</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="/portfolios/v1">
+                            <i class='bx bx-bar-chart-alt-2 icon' ></i>
+                            <span class="text nav-text">Accounts</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="/divergence/v1">
+                            <i class='bx bx-bell icon'></i>
+                            <span class="text nav-text">Portfolio Divergence</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="/posdetails/v1">
+                            <i class='bx bx-pie-chart-alt icon' ></i>
+                            <span class="text nav-text">Postion Details</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="/rebalance/v2">
+                            <i class='bx bx-heart icon' ></i>
+                            <span class="text nav-text">Rebalance</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="/drawdowns/v2">
+                            <i class='bx bx-wallet icon' ></i>
+                            <span class="text nav-text">Drawdowns</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="/riskmetrics/v1">
+                            <i class='bx bx-euro icon' ></i>
+                            <span class="text nav-text">Risk Metrics</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="/projection/v2">
+                            <i class='bx bx-coin icon' ></i>
+                            <span class="text nav-text">Projection</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="/income/v1">
+                            <i class='bx bx-dollar icon' ></i>
+                            <span class="text nav-text">Income/Returns</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="/attribution/v1">
+                            <i class='bx bx-candles icon' ></i>
+                            <span class="text nav-text">Attribution</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-upload icon' ></i>
+                            <span class="text nav-text">Upload</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="bottom-content">
+                <li class="">
+                    <a href="/">
+                        <i class='bx bx-log-out icon' ></i>
+                        <span class="text nav-text">Logout</span>
+                    </a>
+                </li>
+            </div>
+        </div>
+    </nav>
+    <section class="home">
+        <div class="text">BERIL</div>
+        {% block metrics %}
+        {% endblock %} {# metrics #}
+    </section>
+{% endblock %} {# content #}
+</body>
+
+{% block scripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    {# #}
+    <script src="{{ url_for('static', path='jqwidgets/scripts/jquery-1.11.1.min.js') }}"></script>
+    <script src="{{ url_for('static', path='jqwidgets/jqwidgets/jqxcore.js') }}"></script>
+    <script src="{{ url_for('static', path='jqwidgets/jqwidgets/jqxmenu.js') }}"></script>
+    <script src="{{ url_for('static', path='jqwidgets/jqwidgets/jqx-all.js') }}"></script>
+    <script src="{{ url_for('static', path='jqwidgets/scripts/angular.min.js') }}"></script>
+    <script src="{{ url_for('static', path='jqwidgets/jqwidgets/globalization/globalize.js') }}"></script>
+    {# #}
+    <script src="{{ url_for('static', path='script.js') }}"></script>
+{% endblock %} {# scripts #}
+
+{% block scripted %}
+<script rel="javascript" type="text/javascript">
+$(document).ready(function () {
+});
+</script>
+{% endblock %} {# scripted #}
+

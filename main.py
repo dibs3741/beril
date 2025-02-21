@@ -1,11 +1,14 @@
 # main.py
 
+import ssl
+import json 
 import traceback
 import logging
 import numpy as np 
 import pandas as pd
 import datetime as dt
 import numpy_financial as npf
+from fastapi.encoders import jsonable_encoder
 from decimal import Decimal 
 from tabulate import tabulate
 from scipy.stats import norm 
@@ -72,7 +75,7 @@ def get_user(username: str) -> User:
         users.append(User(username=user, hashed_password=email)) 
     user = [user for user in users if user.username == username]
     #user = [user for user in DB.user if user.username == username]
-    if user:
+    if user: 
         return user[0]
     return None
 
@@ -88,6 +91,8 @@ class Settings:
     COOKIE_NAME = "access_token"
 
 app = FastAPI()
+ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+ssl_context.load_cert_chain('ssl/certificate.crt', keyfile='ssl/private.key')
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name='static')
 settings = Settings()
@@ -166,6 +171,65 @@ def index(request: Request):
     }
     return templates.TemplateResponse("index.html", context)
 
+@app.get("/feedback", response_class=HTMLResponse)
+async def feedback_get(request: Request):
+    return templates.TemplateResponse("feedback.html", {"request":request, "user":None})
+
+@app.post("/feedback")
+async def feedback_post(request: Request):
+    form = await request.form()
+    req_json = json.dumps(jsonable_encoder(form), indent=4)
+    runid = datetime.now(timezone('US/Eastern')).strftime('%Y%m%d%H%M%S')
+    logfile = "./feedbacks/feedback_{}.json".format(runid) 
+    with open(logfile, 'w') as json_file:
+        #json.dump(req_json, json_file, indent=4)
+        json_file.write(req_json) 
+    console.log(req_json)
+    return {'data':'submission Successful! thank you!'} 
+
+@app.get("/private3", response_class=HTMLResponse)
+def private3_get(request: Request):
+    return templates.TemplateResponse("private3.html", {"request":request, "user":None})
+
+@app.get("/logmein/v1", response_class=HTMLResponse)
+def logmein_get_v1(request: Request):
+    return templates.TemplateResponse("logmein.html", {"request":request, "user":None})
+
+@app.get("/portfolios/v1", response_class=HTMLResponse)
+def fortfolios_get_v1(request: Request):
+    return templates.TemplateResponse("portfolios.html", {"request":request, "user":None})
+
+@app.get("/divergence/v1", response_class=HTMLResponse)
+def divergence_get_v1(request: Request):
+    return templates.TemplateResponse("divergence.html", {"request":request, "user":None})
+
+@app.get("/posdetails/v1", response_class=HTMLResponse)
+def divergence_get_v1(request: Request):
+    return templates.TemplateResponse("positiondetails.html", {"request":request, "user":None})
+
+@app.get("/rebalance/v2", response_class=HTMLResponse)
+def rebalance_get_v2(request: Request):
+    return templates.TemplateResponse("tradereqs.html", {"request":request, "user":None})
+
+@app.get("/drawdowns/v2", response_class=HTMLResponse)
+def drawdowns_get_v2(request: Request):
+    return templates.TemplateResponse("drawdowns.html", {"request":request, "user":None})
+
+@app.get("/riskmetrics/v1", response_class=HTMLResponse)
+def riskmetrics_get_v1(request: Request):
+    return templates.TemplateResponse("riskmetrics.html", {"request":request, "user":None})
+
+@app.get("/projection/v2", response_class=HTMLResponse)
+def projection_get_v2(request: Request):
+    return templates.TemplateResponse("projection.html", {"request":request, "user":None})
+
+@app.get("/income/v1", response_class=HTMLResponse)
+def income_get_v1(request: Request):
+    return templates.TemplateResponse("income.html", {"request":request, "user":None})
+
+@app.get("/attribution/v1", response_class=HTMLResponse)
+def attribution_get_v1(request: Request):
+    return templates.TemplateResponse("attribution.html", {"request":request, "user":None})
 
 # --------------------------------------------------------------------------
 # Private Page
@@ -340,7 +404,6 @@ async def folio_attribution_v1(folioname:str, db: Session = Depends(get_db), tkn
         df30 = df9.mul(df23['allocated'].to_list(), axis=1) 
         df31 = df30.round(6) 
         df31.reset_index(inplace=True)
-        df31.to_csv('./df31.csv') 
         df32 = pd.melt(df31, id_vars=['yymm'], var_name='symbol', value_name='returns') 
         df33 = df32.pivot(index='symbol', columns='yymm', values='returns') 
         df34 = pd.DataFrame(df33.to_records())
@@ -760,7 +823,7 @@ def metrics_v2(folioname:str, db: Session=Depends(get_db), tkn=Depends(JWTBearer
     spxprices2.loc[:,'return'] = spxprices2['price'].pct_change()
     spxprices3 = spxprices2[['asofdate','return']] 
     spxprices4 = spxprices3[1:] 
-    spxprices4.to_csv('./spxprices4.csv') 
+    #spxprices4.to_csv('./spxprices4.csv') 
     spxprices4.set_index('asofdate', inplace=True) 
     #
     activity1 = df[['asofdate', 'notional_start', 'income', 'pnl']] 

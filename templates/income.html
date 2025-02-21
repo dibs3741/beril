@@ -1,0 +1,155 @@
+{% extends "private3.html" %}  
+
+{% block metrics %}
+    <div style="padding:50px;">
+        <div> 
+            <input type="button" id="btn_fetchIncome" value="Fetch"/>
+        </div> 
+        <div id='jqxTabs'>
+            <ul>
+                <li>Monthly</li>
+                <li>Yearly</li>
+            </ul> 
+            <div><div id="idMlyIncomReturnGrid"></div></div> 
+            <div><div id="idYlyIncomReturnGrid"></div></div> 
+        </div> 
+    </div>
+{% endblock %} {# metrics #}
+
+{% block scripted %}
+<script rel="javascript" type="text/javascript">
+$(document).ready(function () {
+    //--- section: income and returns [start] ---
+    $('#btn_fetchIncome').jqxButton({ width: '400px', height: '25px', theme: 'ui-smoothness' });
+    $('#btn_fetchIncome').click(function(){
+        globalfolio = sessionStorage.getItem('globalfolio');
+        accesstoken = sessionStorage.getItem('accesstoken');
+        var url = '/folio/income/mtd/v1?folioname=' + globalfolio;
+        var source = {
+            datatype: "json",
+            datafields: [
+                { name: 'asofdate', type:'string'},
+                { name: 'income', type:'number'},
+                { name: 'return', type:'number'},
+                { name: 'flow', type:'number'}
+            ],
+            id: 'ident',
+            cache: false,
+            type : 'GET',
+            pagesize: 20,
+            url: url,
+            root: 'data',
+            updaterow: function (rowid, rowdata, commit) {
+            }
+        };
+        var dataAdapter = new $.jqx.dataAdapter(source, {
+            beforeSend: function (jqxhr, settings) { 
+               jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+            },
+            downloadComplete: function (data, status, xhr) { 
+               console.log(xhr); 
+            },
+            loadError(xhr, status, error) {
+               console.log(status); 
+               console.log(error); 
+            }
+        });
+        $("#idMlyIncomReturnGrid").jqxGrid({ source: dataAdapter });
+    });
+
+    $('#jqxTabs').jqxTabs({
+        width: 400,
+        position: 'top',
+        initTabContent: initWidgets,
+        theme: 'ui-smoothness'
+    });
+
+    var initFetchYearlyGrid = function() {
+        globalfolio = sessionStorage.getItem('globalfolio');
+        accesstoken = sessionStorage.getItem('accesstoken');
+        var url = '/folio/income/ytd/v1?folioname=' + globalfolio;
+        var source = {
+            datatype: "json",
+            datafields: [
+                { name: 'year', type:'string'},
+                { name: 'ytd', type:'number'},
+                { name: 'income', type:'number'},
+                { name: 'flow', type:'number'}
+            ],
+            id: 'ident',
+            cache: false,
+            type : 'GET',
+            pagesize: 20,
+            url: url,
+            root: 'data',
+            updaterow: function (rowid, rowdata, commit) {
+            }
+        };
+        var dataAdapter = new $.jqx.dataAdapter(source, {
+            beforeSend: function (jqxhr, settings) { 
+               jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+            },
+            downloadComplete: function (data, status, xhr) { 
+               console.log(xhr); 
+            },
+            loadError(xhr, status, error) {
+               console.log(status); 
+               console.log(error); 
+            }
+        });
+        $("#idYlyIncomReturnGrid").jqxGrid({ source: dataAdapter });
+    }
+
+    $('#jqxTabs').on('selected', function (event) {
+        var selectedTab = event.args.item;
+        switch(selectedTab) {
+            case 0:
+                //initFetchPosGrid();
+                break;
+            case 1:
+                initFetchYearlyGrid();
+                break;
+        }
+    });
+
+    var initWidgets = function(tab) {
+        switch(tab) {
+            case 0:
+                //initFetchPosGrid();
+                break;
+            case 1:
+                initFetchYearlyGrid();
+                break;
+        }
+    }
+
+    $("#idMlyIncomReturnGrid").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '400',
+        columns: [
+            { text: 'Date', dataField: 'asofdate', width: 100, cellsalign: 'right',  cellsformat: 's'},
+            { text: 'Returns', dataField: 'return', width: 100, cellsalign: 'right',  cellsformat: 'p2'},
+            { text: 'Income', dataField: 'income', width: 100, cellsalign: 'right',  cellsformat: 'c2'},
+            { text: 'Flow', dataField: 'flow', width: 100, cellsalign: 'right',  cellsformat: 'c0'}
+        ]
+    });
+
+    $("#idYlyIncomReturnGrid").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '400',
+        columns: [
+            { text: 'Date', dataField: 'year', width: 100, cellsalign: 'center' },
+            { text: 'Returns', dataField: 'ytd', width: 100, cellsalign: 'right',  cellsformat: 'p2'},
+            { text: 'Income', dataField: 'income', width: 100, cellsalign: 'right',  cellsformat: 'c2'},
+            { text: 'Flow', dataField: 'flow', width: 100, cellsalign: 'right',  cellsformat: 'c0'}
+        ]
+    });
+});
+</script>
+{% endblock %} {# scripted #}

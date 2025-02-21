@@ -1,0 +1,100 @@
+{% extends "private3.html" %}  
+
+{% block metrics %}
+    <div style="padding:50px;">
+        <div style="padding-left:50px;"> 
+            <input type="button" id="swap_load" value="Fetch"/>
+        </div> 
+        <div> 
+        <table id='hor-minimalist-a'> 
+            <thead> <th colspan=2>Risk Metrics</th> </thead> 
+            <tbody> 
+            <tr> 
+                <td>Volatility:</td> 
+                <td align='right'><div id="id_volatility"></div></td>
+            </tr> 
+            <tr> 
+                <td>Correlation</td> 
+                <td align='right'><div id="id_correlation"></div></td>
+                <!-- <td><input type="text" id="strategy"/></td> --> 
+            </tr> 
+            <tr> 
+                <td>CAGR</td> 
+                <td align='right'><div id="id_cagr"></div></td>
+            </tr> 
+            <tr> 
+                <td>Tracking Error</td> 
+                <td align='right'><div id="id_trackerr"></div></td>
+            </tr> 
+            <tr> 
+                <td>Average Return of Positive Months</td> 
+                <td align='right'><div id="id_avg_ret_pos_mths"></div></td>
+            </tr> 
+            <tr> 
+                <td>Average Return of Negative Months</td> 
+                <td align='right'><div id="id_avg_ret_neg_mths"></div></td>
+            </tr> 
+            <tr> 
+                <td>Max Drawdown</td> 
+                <td align='right'><div id="id_max_drawdown"></div></td>
+            </tr> 
+            <tr> 
+                <td>Sharpe Ratio</td> 
+                <td align='right'><div id="id_sharpe_ratio"></div></td>
+            </tr> 
+            <tr> 
+                <td>Sortino Ratio</td> 
+                <td align='right'><div id="id_sortino_ratio"></div></td>
+            </tr> 
+            <tr> 
+                <td>Value at Risk(95%, covariance)</td> 
+                <td align='right'><div id="id_var95_covariance"></div></td>
+            </tr> 
+            <tr> 
+                <td>Value at Risk(95%, historical)</td> 
+                <td align='right'><div id="id_var95_historical"></div></td>
+            </tr> 
+            </tbody> 
+        </table> 
+        </div> 
+    </div>
+{% endblock %} {# metrics #}
+
+{% block scripted %}
+<script rel="javascript" type="text/javascript">
+$(document).ready(function () {
+    $("#swap_load").jqxButton({ width: '325px', height: '25px', theme: 'ui-smoothness' });
+    $('#swap_load').click(function(){
+        globalfolio = sessionStorage.getItem('globalfolio');
+        accesstoken = sessionStorage.getItem('accesstoken');
+        axios({
+            method: 'get',
+            url:  "/metrics/v2?folioname=" + globalfolio,
+            config: { 
+                headers: {'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + accesstoken 
+            }},
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accesstoken 
+            }
+        })
+        .then((response) => {
+            document.getElementById('id_volatility').innerHTML = (response.data.data.volatility * 100).toFixed(2) + "%";
+            document.getElementById('id_correlation').innerHTML = (response.data.data.correlation * 100).toFixed(2) + "%";
+            document.getElementById('id_cagr').innerHTML = (response.data.data.cagr * 100).toFixed(2) + "%";
+            document.getElementById('id_trackerr').innerHTML = (response.data.data.trackerr * 100).toFixed(2) + "%";
+            document.getElementById('id_avg_ret_pos_mths').innerHTML = (response.data.data.avg_ret_pos_mths * 100).toFixed(2) + "%";
+            document.getElementById('id_avg_ret_neg_mths').innerHTML = (response.data.data.avg_ret_neg_mths * 100).toFixed(2) + "%";
+            document.getElementById('id_max_drawdown').innerHTML = (response.data.data.max_drawdown * 100).toFixed(2) + "%";
+            document.getElementById('id_sharpe_ratio').innerHTML = response.data.data.sharpe_ratio.toFixed(2);
+            document.getElementById('id_sortino_ratio').innerHTML = response.data.data.sortino_ratio.toFixed(2);
+            document.getElementById('id_var95_covariance').innerHTML = (response.data.data.var95_covariance * 100).toFixed(2) + "%";
+            document.getElementById('id_var95_historical').innerHTML = (response.data.data.var95_historical * 100).toFixed(2) + "%";
+        })
+        .catch((error) => {
+        });
+    });
+});
+</script>
+{% endblock %} {# scripted #}

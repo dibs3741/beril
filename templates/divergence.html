@@ -1,0 +1,77 @@
+{% extends "private3.html" %}  
+
+{% block metrics %}
+    <div style="padding:50px;">
+        <div id="id_dashboard"></div> 
+    </div>
+{% endblock %} {# metrics #}
+
+{% block scripted %}
+<script rel="javascript" type="text/javascript">
+$(document).ready(function () {
+    $("#id_dashboard").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '700',
+        showtoolbar: true,
+        showaggregates: true,
+        showstatusbar: true,
+        statusbarheight: 30,
+        rendertoolbar: function (statusbar) {
+            var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
+            var reloadButton   = $(" \
+                <div style='float:left; margin-left:1px;'> \
+                <img style='position:relative; margin-top:1px; width:30px; height:15px;' src=\"{{ url_for('static', path='/img/refresh.png') }}\" /> \
+                <span style='margin-left: 5px; position: relative; top: -1px;'>Fetch</span> </div>");
+            container.append(reloadButton);
+            statusbar.append(container);
+            reloadButton.jqxButton({ theme: 'ui-smoothness', width: 75, height: 20 });
+            reloadButton.click(function (event) {
+                // var folioname = $("#id_folio_grup").jqxButtonGroup('getSelection');
+                globalfolio = sessionStorage.getItem('globalfolio');
+                var url = "/folio/dashboard/v1?folioname=" + globalfolio;
+                var source = {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'sector', type:'string'},
+                        { name: 'symbol', type:'string'},
+                        { name: 'allocated', type:'number'},
+                        { name: 'actual', type:'number'},
+                        { name: 'forecast', type:'number'},
+                        { name: 'spread', type:'number'}
+                    ],
+                    id: 'ident',
+                    type : 'GET',
+                    url: url,
+                    root: 'data'
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source, {
+                    beforeSend: function (jqxhr, settings) { 
+                       accesstoken = sessionStorage.getItem('accesstoken');
+                       jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                    },
+                    downloadComplete: function (data, status, xhr) { 
+                       console.log(xhr); 
+                    }
+                });
+                $("#id_dashboard").jqxGrid({ source: dataAdapter });
+            });
+        },
+        renderstatusbar: function(statusbar) {
+        },
+        ready: function () {
+        },
+        columns: [
+            { text: 'Sector', dataField: 'sector', width: 200, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Symbol', dataField: 'symbol', width: 100, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Allocation', dataField: 'allocated', width: 100, cellsalign: 'center',  cellsformat: 'p0', aggregates:['sum']},
+            { text: 'Actual($)', dataField: 'actual', width: 100, cellsalign: 'right',  cellsformat: 'n0'},
+            { text: 'Forecast($)', dataField: 'forecast', width: 100, cellsalign: 'right',  cellsformat: 'n0'},
+            { text: 'Spread($)', dataField: 'spread', width: 100, cellsalign: 'right',  cellsformat: 'n0'}
+        ]
+    });
+});
+</script>
+{% endblock %} {# scripted #}

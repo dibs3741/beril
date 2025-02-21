@@ -1,0 +1,127 @@
+{% extends "base.html" %}  
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<div> </div>
+
+<div id='sampleForm' class='center' style="width: 600px; height: auto;"></div>
+
+{% endblock %} {# content #}
+
+{% block scripted %}
+<script rel="javascript" type="text/javascript">
+$(document).ready(function () {
+    var template = [
+        {
+            bind: 'firstName',
+            type: 'text',
+            label: 'Name',
+            required: true,
+            labelWidth: '80px',
+            width: '250px',
+            info: 'Enter first name',
+            infoPosition: 'right'
+        },
+        {
+            bind: 'lastName',
+            type: 'text',
+            label: 'Please suggest at least two enhancements that you think can <br>be made to improve the software',
+            labelPosition: 'top',
+            align: 'left',
+            required: true,
+            //labelWidth: '220px',
+            width: '350px',
+            height: '100px',
+            info: 'Enter your feedback'
+        },
+        {
+            type: 'label',
+            label: 'Do you have investments in a target date fund?',
+            rowHeight: '40px',
+        },
+        {
+            bind: 'radiobuttonValue',
+            type: 'option',
+            label: '' , 
+            labelPosition: 'right',
+            columnWidth: '150px',
+            align: 'left',
+            //width: '15px',
+            //required: true,
+            optionslayout: 'horizontal',
+            options: [
+                { label: 'yes', value: 'yes' },
+                { label: 'no', value: 'no' }
+            ]
+        },
+        {
+            type: 'label',
+            label: 'Have you ever used a portfolio management software before?',
+            rowHeight: '40px',
+        },
+        {
+            bind: 'radiobuttonValue',
+            type: 'option',
+            label: '' , 
+            labelPosition: 'right',
+            columnWidth: '150px',
+            align: 'left',
+            optionslayout: 'horizontal',
+            options: [
+                { label: 'yes', value: 'yes' },
+                { label: 'no', value: 'no' }
+            ]
+        },
+        {
+            type: 'label',
+            label: 'If you had time would you have spent more time managing your <br>finances or will you go for professional help?',
+            rowHeight: '40px',
+        },
+        {
+            bind: 'managedacc',
+            type: 'option',
+            label: '' , 
+            labelPosition: 'right',
+            columnWidth: '150px',
+            align: 'left',
+            optionslayout: 'horizontal',
+            options: [
+                { label: 'Manage myself', value: 'self' },
+                { label: 'Professional Help', value: 'prof' }
+            ]
+        },
+        {
+            name: 'submitButton',
+            type: 'button',
+            text: 'Submit',
+            align: 'right',
+            padding: {left: 0, top: 5, bottom: 5, right: 40}
+        }
+    ]
+    var sampleValue = {
+        firstName: '',
+        lastName: '',
+        'radiobuttonValue': 'no',
+        'managedacc': 'self'
+    };
+    $('#sampleForm').jqxForm({
+        template: template,
+        value: sampleValue,
+        padding: { left: 10, top: 10, right: 10, bottom: 10 }
+    });
+    var btn =  $('#sampleForm').jqxForm('getComponentByName', 'submitButton');
+    btn.on('click', function () {
+        // function: submit
+        // arg1: url
+        // arg2, optional: target, default is _blank
+        // arg3, optional: submit method - GET or POST, default is POST
+        // sampleForm.jqxForm('submit', "https://www.jqwidgets.com/form_demo/", "_blank", 'POST');
+        $('#sampleForm').jqxForm('submit', "http://45.56.104.117:8000/feedback", "_blank", 'POST');
+    });
+});
+</script>
+{% endblock %} {# scripted #}
