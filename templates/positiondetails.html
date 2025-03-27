@@ -9,6 +9,7 @@
 {% block scripted %}
 <script rel="javascript" type="text/javascript">
 $(document).ready(function () {
+    document.getElementById('id_acc_selected').innerHTML = sessionStorage.getItem('globalfolio');
     $("#id_position_latest").jqxGrid({
         theme: 'ui-smoothness',
         altrows: true,

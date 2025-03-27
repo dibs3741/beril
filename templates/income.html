@@ -19,6 +19,7 @@
 {% block scripted %}
 <script rel="javascript" type="text/javascript">
 $(document).ready(function () {
+    document.getElementById('id_acc_selected').innerHTML = sessionStorage.getItem('globalfolio');
     //--- section: income and returns [start] ---
     $('#btn_fetchIncome').jqxButton({ width: '400px', height: '25px', theme: 'ui-smoothness' });
     $('#btn_fetchIncome').click(function(){
