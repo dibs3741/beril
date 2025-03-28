@@ -5,7 +5,6 @@ from sqlalchemy.orm import relationship
 from database import Base
 
 
-
 class User(Base):
     __tablename__ = "auth_users"
     id = Column(Integer, primary_key=True)
@@ -63,3 +62,4 @@ class Prices(Base):
     asofdate = Column(Date) 
     ticker = Column(String) 
     price = Column(Numeric(20,2)) 
+

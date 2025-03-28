@@ -37,7 +37,6 @@ import crud, models, schemas
 from models import Position
 from models import Trades
 from models import Prices
-from models import PricesDemo
 from database import SessionLocal, engine
 from auth_bearer import JWTBearer
 from auth_bearer import decodeJWT
