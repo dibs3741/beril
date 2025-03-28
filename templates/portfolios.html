@@ -1,13 +1,16 @@
 {% extends "private3.html" %}  
 
 {% block metrics %}
-    <div style="padding:50px;">
+    <div style="padding-left:50px;">
         <div id='id_folio'> </div>
-        <br>
-        Cash Equivalents:
-        <div id="id_cash_equivalent"></div> 
-        <div id="id_asset_allocation"></div> 
     </div>
+    <div id="id_model" style="padding:0px;"> </div>
+    <table id = 'hor-minimalist-b'>
+        <thead> 
+            <th> Cash Equivalent: </th> 
+            <th align='right'><div id="id_cash_equivalent"></div></th>
+        </thead> 
+    </table> <!-- <table id = 'hor-minimalist-a'> --> 
 {% endblock %} {# metrics #}
 
 {% block scripted %}
@@ -43,52 +46,15 @@ $(document).ready(function () {
     $('#id_folio').jqxListBox({ 
         source: dataAdapter
     })
-    $("#id_folio").on('select', function (event) {
-    })
-
-    $("#id_asset_allocation").jqxGrid({
-        theme: 'ui-smoothness',
-        altrows: true,
-        rowsheight: 20,
-        autoheight: true,
-        width: '500',
-        showaggregates: true,
-        showstatusbar: true,
-        statusbarheight: 30,
-        columns: [
-            { text: 'Asset Class', dataField: 'assetclass', width: 400, cellsalign: 'left',  cellsformat: 's'},
-            { text: 'Allocation', dataField: 'allocated', width: 100, cellsalign: 'right',  cellsformat: 'p0', aggregates:['sum']}
-        ]
-    });
 
     $("#id_folio").on('select', function (event) {
         if (event.args) {
             var item = event.args.item;
             if (item) {
                 sessionStorage.setItem('globalfolio', item.value);
+                document.getElementById('id_acc_selected').innerHTML = item.value;
                 globalfolio = item.value;
                 console.log("selected folio: " + globalfolio);
-                var url = "/folio/allocation/v1?folioname=" + globalfolio;
-                var source = {
-                    datatype: "json",
-                    datafields: [
-                        { name: 'assetclass', type:'string'},
-                        { name: 'allocated', type:'number'}
-                    ],
-                    id: 'ident',
-                    type : 'GET',
-                    url: url,
-                    root: 'data'
-                };
-                var dataAdapter = new $.jqx.dataAdapter(source, {
-                    beforeSend: function (jqxhr, settings) { 
-                       jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
-                    },
-                    downloadComplete: function (data, status, xhr) { 
-                       console.log(xhr); 
-                    }
-                });
-                $("#id_asset_allocation").jqxGrid({ source: dataAdapter });
                 axios({
                     method: 'get',
                     url:  "/folio/cash/v1?folioname=" + globalfolio,
@@ -103,6 +69,78 @@ $(document).ready(function () {
                 })
                 .then((response) => {
                     document.getElementById('id_cash_equivalent').innerHTML = (response.data.data * 100).toFixed(2) + "%";
+                })
+                .catch((error) => {
+                });
+
+                axios({
+                    method: 'get',
+                    url:  "/folio/allocation/v1?folioname=" + globalfolio,
+                    config: { 
+                        headers: {'Content-Type': 'multipart/form-data',
+                        'Authorization': 'Bearer ' + accesstoken 
+                    }},
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + accesstoken 
+                    }
+                })
+                .then((response) => {
+                    document.getElementById('id_model').innerHTML = '';
+                    const table = document.createElement('table'); 
+                    table.id = 'hor-minimalist-b';
+                    const headerRow = document.createElement('tr');
+                    const th = document.createElement('th');
+                    th.textContent = "Foundational";
+                    headerRow.appendChild(th);
+                    table.appendChild(headerRow);
+                    response.data.df_core.forEach(function(d){
+                        const tr = document.createElement('tr');
+                        const td = document.createElement('td');
+                        td.textContent = d.assetclass;
+                        tr.appendChild(td);
+                        const td2 = document.createElement('td');
+                        td2.align = "right";
+                        td2.textContent = d.allocated + "%";
+                        tr.appendChild(td2);
+                        table.appendChild(tr);
+                    }) 
+                    //
+                    const headerRow1 = document.createElement('tr');
+                    const th1 = document.createElement('th');
+                    th1.textContent = "Specialized";
+                    headerRow1.appendChild(th1);
+                    table.appendChild(headerRow1);
+                    response.data.df_splzd.forEach(function(d){
+                        tr = document.createElement('tr');
+                        td = document.createElement('td');
+                        td.textContent = d.assetclass;
+                        tr.appendChild(td);
+                        td2 = document.createElement('td');
+                        td2.align = "right";
+                        td2.textContent = d.allocated + "%";
+                        tr.appendChild(td2);
+                        table.appendChild(tr);
+                    }) 
+                    //
+                    const headerRow2 = document.createElement('tr');
+                    th2 = document.createElement('th');
+                    th2.textContent = "Alternatives";
+                    headerRow2.appendChild(th2);
+                    table.appendChild(headerRow2);
+                    response.data.df_alters.forEach(function(d){
+                        tr = document.createElement('tr');
+                        td = document.createElement('td');
+                        td.textContent = d.assetclass;
+                        tr.appendChild(td);
+                        td2 = document.createElement('td');
+                        td2.align = "right";
+                        td2.textContent = d.allocated + "%";
+                        tr.appendChild(td2);
+                        table.appendChild(tr);
+                    }) 
+                    //
+                    document.getElementById('id_model').appendChild(table);
                 })
                 .catch((error) => {
                 });
