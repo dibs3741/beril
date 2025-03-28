@@ -4,11 +4,71 @@
     <div style="padding:50px;">
         <div id="id_tradereq"></div> 
     </div>
+    <div style="padding:50px;">
+        <div style='display:flex;justify-content:left;font-family:Arial,Helvetica,sans-serif;font-size:13px'>
+        Business rules applied to generate trade requirements:<br> 
+        Dispersion indicates how much portfolio can drift from model before initiating rebalance<br>
+        Trade limit indicates the max amount that can be traded per instrument on a given day
+        </div> 
+        <div id="id_traderules"></div> 
+    </div>
 {% endblock %} {# metrics #}
 
 {% block scripted %}
 <script rel="javascript" type="text/javascript">
 $(document).ready(function () {
+    document.getElementById('id_acc_selected').innerHTML = sessionStorage.getItem('globalfolio');
+    $("#id_traderules").jqxGrid({
+        theme: 'ui-smoothness',
+        altrows: true,
+        rowsheight: 20,
+        autoheight: true,
+        width: '700',
+        ready: function () {
+            globalfolio = sessionStorage.getItem('globalfolio');
+            var url = "/folio/traderules/v1?folioname=" + globalfolio;
+            var source = {
+                datatype: "json",
+                datafields: [
+                    { name: 'user_name', type:'string'},
+                    { name: 'folio_name', type:'string'},
+                    { name: 'side', type:'string'},
+                    { name: 'trade_cap', type:'number'},
+                    { name: 'drift_limit', type:'number'}
+                ],
+                id: 'ident',
+                cache: false,
+                type : 'GET',
+                pagesize: 20,
+                url: url,
+                root: 'data',
+                updaterow: function (rowid, rowdata, commit) {
+                }
+            };
+            var dataAdapter = new $.jqx.dataAdapter(source, {
+                beforeSend: function (jqxhr, settings) { 
+                   accesstoken = sessionStorage.getItem('accesstoken');
+                   jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+                },
+                downloadComplete: function (data, status, xhr) { 
+                   console.log(xhr); 
+                },
+                loadError(xhr, status, error) {
+                   console.log(status); 
+                   console.log(error); 
+                }
+            });
+            $("#id_traderules").jqxGrid({ source: dataAdapter });
+        },
+        columns: [
+            { text: 'User', dataField: 'user_name', width: 200, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Portfolio', dataField: 'folio_name', width: 100, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Side', dataField: 'side', width: 100, cellsalign: 'left',  cellsformat: 's'},
+            { text: 'Trade Notional Limit', dataField: 'trade_cap', width: 150, cellsalign: 'right',  cellsformat: 'c2'},
+            { text: 'Model Dispersion Limit', dataField: 'drift_limit', width: 150, cellsalign: 'right',  cellsformat: 'c2'}
+        ]
+    });
+
     $("#id_tradereq").jqxGrid({
         theme: 'ui-smoothness',
         altrows: true,
