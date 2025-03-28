@@ -2,13 +2,14 @@
 <html lang="en">
 
 {% block head %}
-    <title>Dashboard Sidebar Menu</title> 
+    <title> BERIL - Portfolio Management System</title> 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {# #}
     <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
     <link rel="stylesheet" href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css'>
+    {# #}
     {# #}
     <link href="{{ url_for('static', path='/expresstable.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', path='/jqwidgets/jqwidgets/styles/jqx.base.css') }}" rel="stylesheet" type="text/css">
@@ -26,10 +27,9 @@
 
                 <div class="text logo-text">
                     <span class="name">BERILSOFT</span>
-                    <span class="profession">Software Services</span>
+                    <span class="profession">Financial Services</span>
                 </div>
             </div>
-
             <i class='bx bx-chevron-right toggle'></i>
         </header>
         <div class="menu-bar">
@@ -120,7 +120,15 @@
         </div>
     </nav>
     <section class="home">
-        <div class="text">BERIL</div>
+        <div class="text">
+            {{ data['navhead'] }} 
+            <h5> {{ data['navdesc'] }} </h5>
+        </div>
+        <div style='display:flex;justify-content:center;font-family:Arial,Helvetica,sans-serif;font-size:12px'>
+            <div style="padding-right:25px;"> Account selected: </div> 
+            <div id="id_acc_selected"></div>
+        </div>
+
         {% block metrics %}
         {% endblock %} {# metrics #}
     </section>
