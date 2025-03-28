@@ -1,7 +1,8 @@
 {% extends "private3.html" %}  
 
+
 {% block metrics %}
-    <div style="padding:50px;">
+    <div style="padding:1px;">
         <div style="padding-left:50px;"> 
             <input type="button" id="swap_load" value="Fetch"/>
         </div> 
@@ -58,12 +59,99 @@
         </table> 
         </div> 
     </div>
+    <div style="padding-left:50px;">
+    <div id='jqxTabs'>
+        <ul>
+            <li>Volatility</li>
+            <li>Correlation</li>
+            <li>CAGR</li>
+            <li>Sharpe Ratio</li>
+            <li>Sortino Ratio</li>
+            <li>Value at Risk</li>
+        </ul> 
+        <div style="padding:5px;">
+            <p>
+            Volatility is how much and how quickly prices move over a given span of time. 
+            In the stock market, increased volatility is often a sign of fear and uncertainty among investors. 
+            SPDR S&P 500 ETF (SPY) had 180-Day Historical Volatility (Close-to-Close) of 12.78%. 
+            <br>
+            <br>
+            Ideally a portfolio should have lower volatility than S&P due to diversification.
+            </p>
+        </div> 
+        <div style="padding:5px;">
+            <p>
+            It’s a measurement of how the portfolio moves with respect to S&P 500. 
+            A correlation of 1.0 indicates a perfect positive correlation. 
+            <br>
+            <br>
+            Goal of diversification is to reduce a portfolio’s alignment with the index. 
+            Therefore, a correlation lower than 1(or 100%) is desirable. 
+            </p>
+        </div> 
+        <div style="padding:5px;">
+            <p>
+            CAGR, which stands for "Compound Annual Growth Rate," is a metric used in the stock market to 
+            calculate the average annual growth rate of an investment over a specific period, 
+            taking into account the effect of compounding, essentially showing how much a stock has grown 
+            on average each year over a set timeframe, assuming profits are reinvested throughout the period. 
+            <br>
+            <br>
+            Below is a table of S&P 500 CAGR:<br>
+            <li>3-year CAGR: 11.22%</li>
+            <li>5-year CAGR: 12.37%</li>
+            <li>10-year CAGR: 16.6%</li>
+            <br>
+            <br>
+            In the short term, CAGR of the portfolio may be lesser than S&P 500 
+            but over time it should outperform the index.
+            </p>
+        </div> 
+        <div style="padding:5px;">test
+            <p>
+            The Sharpe ratio compares the return of an investment with its risk. 
+            The Sharpe ratio can help explain whether a portfolio's excess returns are attributable to smart 
+            investment decisions or simply luck and risk. 
+            <br>
+            <br>
+            A Sharpe ratio of 1 or higher is generally considered good, 
+            2 or higher is very good, and 3 or higher is excellent. 10-year historic S&P 500 Sharpe Ratio is 0.89
+            </p>
+        </div> 
+        <div style="padding:5px;">test
+            <p>
+            Unlike the Sharpe ratio, the Sortino ratio only considers returns that fall below a predetermined threshold, 
+            making it particularly useful for investors concerned primarily with downside risk. 
+            <br>
+            <br>
+            A higher Sortino ratio indicates a better risk-adjusted return for a given level of downside risk.  
+            A Sortino ratio of 1 or higher is generally considered good
+            </p>
+        </div> 
+        <div style="padding:5px;">test
+            <p>
+            "Value at Risk" (VaR) is a statistical measure that estimates the maximum potential loss an 
+            investment or portfolio could experience within a specified time frame, at a given confidence level. 
+            <br>
+            <br>
+            Typically calculated at 95 level, it indicates a confidence of 95% that the portfolio 
+            won’t underperform more than a certain percentage.
+            </p>
+        </div> 
+    </div> 
+    </div> 
 {% endblock %} {# metrics #}
 
 {% block scripted %}
 <script rel="javascript" type="text/javascript">
 $(document).ready(function () {
-    $("#swap_load").jqxButton({ width: '325px', height: '25px', theme: 'ui-smoothness' });
+    document.getElementById('id_acc_selected').innerHTML = sessionStorage.getItem('globalfolio');
+    $('#jqxTabs').jqxTabs({
+        width: 400,
+        scrollPosition: 'both',
+        theme: 'ui-smoothness'
+    });
+    $("#swap_load").jqxButton({ width: '385px', height: '35px', theme: 'ui-smoothness' });
     $('#swap_load').click(function(){
         globalfolio = sessionStorage.getItem('globalfolio');
         accesstoken = sessionStorage.getItem('accesstoken');
