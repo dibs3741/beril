@@ -37,6 +37,7 @@ import crud, models, schemas
 from models import Position
 from models import Trades
 from models import Prices
+from models import PricesDemo
 from database import SessionLocal, engine
 from auth_bearer import JWTBearer
 from auth_bearer import decodeJWT
@@ -45,6 +46,56 @@ logging.getLogger('passlib').setLevel(logging.ERROR)
 console = Console()
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+#dictParams = {} 
+#dictParams['divergence'] = {} 
+#dictParams['divergence']['navhead'] = "Portfolio Divergence" 
+#dictParams['divergence']['navdesc'] = "Displays how the portfolio diverges from the investment model" 
+dictParams = {
+    'welcome': {
+        'navhead' : "Private Section",
+        'navdesc' : "Your private section will be protected by your credentials" 
+    },
+    'logmein': {
+        'navhead' : "Login Credetials",
+        'navdesc' : "" 
+    },
+    'portfolios': {
+        'navhead' : "Accounts",
+        'navdesc' : "Select an account from the listed portfolios" 
+    },
+    'divergence': {
+        'navhead' : "Portfolio Divergence",
+        'navdesc' : "Displays how the portfolio diverges from the investment model" 
+    },
+    'posdetails': {
+        'navhead' : "Position Details",
+        'navdesc' : "Lists all the positions held in the account" 
+    },
+    'rebalance': {
+        'navhead' : "Rebalance",
+        'navdesc' : "Shows trade requirements to align portfolio to the model" 
+    },
+    'drawdowns': {
+        'navhead' : "Drawdown Table",
+        'navdesc' : "Maps the depth and length of each portfolio loss" 
+    },
+    'riskmetrics': {
+        'navhead' : "Risk Metrics",
+        'navdesc' : "Detailed healthcheck of portfolio to measure your risk" 
+    },
+    'projection': {
+        'navhead' : "Projection",
+        'navdesc' : "Calculates the future value of an investment" 
+    },
+    'income': {
+        'navhead' : "Incomes and Returns",
+        'navdesc' : "Steady source of dividends help to rebalance portfolio" 
+    },
+    'attribution': {
+        'navhead' : "Attribution Analysis",
+        'navdesc' : "Shows the contribution of each holding to the portfolio performance" 
+    }
+} 
 
 # --------------------------------------------------------------------------
 # Models and Data
@@ -189,47 +240,47 @@ async def feedback_post(request: Request):
 
 @app.get("/private3", response_class=HTMLResponse)
 def private3_get(request: Request):
-    return templates.TemplateResponse("private3.html", {"request":request, "user":None})
+    return templates.TemplateResponse("private3.html", {"data":dictParams['welcome'], "request":request, "user":None})
 
 @app.get("/logmein/v1", response_class=HTMLResponse)
 def logmein_get_v1(request: Request):
-    return templates.TemplateResponse("logmein.html", {"request":request, "user":None})
+    return templates.TemplateResponse("logmein.html", {"data":dictParams['logmein'], "request":request, "user":None})
 
 @app.get("/portfolios/v1", response_class=HTMLResponse)
-def fortfolios_get_v1(request: Request):
-    return templates.TemplateResponse("portfolios.html", {"request":request, "user":None})
+def portfolios_get_v1(request: Request):
+    return templates.TemplateResponse("portfolios.html", {"data":dictParams['portfolios'], "request":request, "user":None})
 
 @app.get("/divergence/v1", response_class=HTMLResponse)
 def divergence_get_v1(request: Request):
-    return templates.TemplateResponse("divergence.html", {"request":request, "user":None})
+    return templates.TemplateResponse("divergence.html", {"data":dictParams['divergence'], "request":request, "user":None})
 
 @app.get("/posdetails/v1", response_class=HTMLResponse)
-def divergence_get_v1(request: Request):
-    return templates.TemplateResponse("positiondetails.html", {"request":request, "user":None})
+def posdetails_get_v1(request: Request):
+    return templates.TemplateResponse("positiondetails.html", {"data":dictParams['posdetails'], "request":request, "user":None})
 
 @app.get("/rebalance/v2", response_class=HTMLResponse)
 def rebalance_get_v2(request: Request):
-    return templates.TemplateResponse("tradereqs.html", {"request":request, "user":None})
+    return templates.TemplateResponse("tradereqs.html", {"data":dictParams['rebalance'], "request":request, "user":None})
 
 @app.get("/drawdowns/v2", response_class=HTMLResponse)
 def drawdowns_get_v2(request: Request):
-    return templates.TemplateResponse("drawdowns.html", {"request":request, "user":None})
+    return templates.TemplateResponse("drawdowns.html", {"data":dictParams['drawdowns'], "request":request, "user":None})
 
 @app.get("/riskmetrics/v1", response_class=HTMLResponse)
 def riskmetrics_get_v1(request: Request):
-    return templates.TemplateResponse("riskmetrics.html", {"request":request, "user":None})
+    return templates.TemplateResponse("riskmetrics.html", {"data":dictParams['riskmetrics'], "request":request, "user":None})
 
 @app.get("/projection/v2", response_class=HTMLResponse)
 def projection_get_v2(request: Request):
-    return templates.TemplateResponse("projection.html", {"request":request, "user":None})
+    return templates.TemplateResponse("projection.html", {"data":dictParams['projection'], "request":request, "user":None})
 
 @app.get("/income/v1", response_class=HTMLResponse)
 def income_get_v1(request: Request):
-    return templates.TemplateResponse("income.html", {"request":request, "user":None})
+    return templates.TemplateResponse("income.html", {"data":dictParams['income'], "request":request, "user":None})
 
 @app.get("/attribution/v1", response_class=HTMLResponse)
 def attribution_get_v1(request: Request):
-    return templates.TemplateResponse("attribution.html", {"request":request, "user":None})
+    return templates.TemplateResponse("attribution.html", {"data":dictParams['attribution'], "request":request, "user":None})
 
 # --------------------------------------------------------------------------
 # Private Page
@@ -368,6 +419,15 @@ async def folio_get_v1(db: Session = Depends(get_db), dependencies=Depends(JWTBe
     df = pd.DataFrame.from_records(folios, index='id', columns=['user','folio','id']) 
     console.log(decodeJWT(dependencies)) 
     return folios
+
+@app.get("/folio/traderules/v1") 
+async def folio_traderules_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTBearer())):
+    u = decodeJWT(tkn).get('sub') 
+    file = 'sql/trading.rules.1.sql' 
+    with open(file, 'r') as file:
+        f = file.read() 
+        df = pd.read_sql(f, engine, params={'folioname':folioname, 'username':u})
+    return {'data':df.to_dict(orient='records')}
 
 @app.get("/folio/attribution/v1") 
 async def folio_attribution_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTBearer())):
@@ -549,15 +609,24 @@ def folio_projection_v1(
 @app.get("/folio/tradereq/v1") 
 def folio_tradereq_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTBearer())):
     u = decodeJWT(tkn).get('sub')
-    spreadlimitup = 3000
-    spreadlimitdn = -3000
-    tradinglimit = 1000
-    df1 = pd.DataFrame()
+    #
+    file = 'sql/trading.rules.1.sql'
+    with open(file, 'r') as file:
+        f = file.read()
+        df_rules = pd.read_sql(f, engine, params={'folioname':folioname, 'username':u})
+        df_rules_buy = df_rules[df_rules.side == 'buy']
+        df_rules_sell = df_rules[df_rules.side == 'sell']
+        spreadlimitbuy = df_rules_buy.drift_limit.item()
+        tradelimitbuy = df_rules_buy.trade_cap.item()
+        spreadlimitsell = df_rules_sell.drift_limit.item() * -1 
+        tradelimitsell = df_rules_sell.trade_cap.item() 
+    #
     r = folio_dashboard_v1(folioname, db, tkn) 
+    df1 = pd.DataFrame()
     df1 = pd.DataFrame.from_dict(r['data'], orient='columns') 
     df2 = df1[~df1.sector.isin(['cash'])]
-    df3 = df2[~((df2.spread > 0) & (df2.spread < spreadlimitup))]
-    df4 = df3[~((df3.spread < 0) & (df3.spread > spreadlimitdn))]
+    df3 = df2[~((df2.spread > 0) & (df2.spread < spreadlimitbuy))]
+    df4 = df3[~((df3.spread < 0) & (df3.spread > spreadlimitsell))]
     #
     x = position_latest_v1(folioname, db, tkn) 
     df10 = pd.DataFrame.from_dict(x['data'], orient='columns') 
@@ -573,7 +642,9 @@ def folio_tradereq_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(
     df20.loc[df20['spread'] < 0, 'side'] = 'sell'
     #
     # calculate qty to trade 
-    df20['qty'] = 1000/df20['last_px'] 
+    df20.loc[df20['spread'] < 0, 'qty'] = tradelimitsell/df20['last_px'] 
+    df20.loc[df20['spread'] > 0, 'qty'] = tradelimitbuy/df20['last_px'] 
+    #df20['qty'] = 1000/df20['last_px'] 
     df20.qty = df20.qty.astype(int) 
     #
     df30 = pd.DataFrame()
@@ -610,7 +681,15 @@ def folio_allocation_v1(folioname:str, db: Session = Depends(get_db), tkn=Depend
     with open(file, 'r') as file:
         f = file.read() 
         df = pd.read_sql(f, engine, params={'folioname':folioname, 'username':u}) 
-    return {'data':df.to_dict(orient='records')}
+    df_core = df[df['assetclass'].str.contains('Foundational')]
+    df_splzd = df[df['assetclass'].str.contains('Specialized')]
+    df_alters = df[df['assetclass'].str.contains('Alternatives')]
+    return {
+        'data':df.to_dict(orient='records'),
+        'df_core': df_core.to_dict(orient='records'),
+        'df_splzd': df_splzd.to_dict(orient='records'),
+        'df_alters': df_alters.to_dict(orient='records')
+    }
 
 @app.get("/folio/dashboard/v1") 
 def folio_dashboard_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTBearer())):
@@ -816,7 +895,7 @@ def metrics_v2(folioname:str, db: Session=Depends(get_db), tkn=Depends(JWTBearer
     file1 = 'sql/prices_security.sql'
     with open(file1, 'r') as file1:
         f1 = file1.read() 
-        spxprices1 = pd.read_sql(f1, engine, params={'ticker':'SPX'}) 
+        spxprices1 = pd.read_sql(f1, engine, params={'ticker':'SPY'}) 
         spxprices1.fillna(0, inplace=True)
     #
     spxprices2 = spxprices1[spxprices1['asofdate'].isin(df.asofdate.tolist())].copy() 
@@ -981,3 +1060,4 @@ def metrics_vol_v1(db: Session = Depends(get_db)):
         'perposmonth': perposmonth 
         }
     }
+
