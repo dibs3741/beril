@@ -1,0 +1,154 @@
+/*--------------------------------------------------------------------- File Name: style.css ---------------------------------------------------------------------*/
+/*--------------------------------------------------------------------- import Files ---------------------------------------------------------------------*/
+
+
+/*--------------------------------------------------------------------- skeleton ---------------------------------------------------------------------*/
+
+/* services section start */
+
+
+.services_section {
+    width: 100%;
+    float: left;
+    background-image: url(../images/about-bg.png);
+    height: auto;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.services_taital {
+    width: 100%;
+    font-size: 30px;
+    color: #252525;
+    text-align: center;
+    font-weight: bold;
+}
+.services_taital::after {
+    content: '';
+    position: absolute;
+    width: 85px;
+    height: 10px;
+    background-color: #000;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+    bottom: 0px;
+    border-radius: 100px;
+}
+
+.services_text {
+    width: 100%;
+    font-size: 16px;
+    color: #000;
+    text-align: center;
+    margin: 0px;
+    padding-top: 30px;
+}
+.services_box {
+    width: 100%;
+}
+
+.express_text {
+    width: 100%;
+    float: left;
+    font-size: 26px;
+    color: #252525;
+    text-align: center;
+    padding-top: 68px;
+}
+.lorem_text{
+    width: 90%;
+    margin: 0 auto;
+    font-size: 15px;
+    color: #252525;
+    text-align: center;
+}
+.seemore_bt{
+    width: 170px;
+    margin: 0 auto;
+}
+.seemore_bt a {
+    width: 100%;
+    float: left;
+    font-size: 18px;
+    color: #000;
+    text-align: center;
+    padding-top: 20px;
+}
+.seemore_bt a:hover{
+    color: #0c426e;
+}
+.image_1{
+    width: 100%;
+    float: left;
+}
+.padding_right_0{
+    padding-right: 0px;
+}
+.padding_left_0{
+    padding-left: 0px;
+}
+/* services section end */
+
+/* providing section end */
+
+.providing_section{
+    width: 100%;
+    float: left;
+}
+.providing_section_2{
+    width: 100%;
+    float: left;
+    background-image: url(../images/img-4.png);
+    height: auto;
+    background-repeat: no-repeat;
+    padding: 90px 0px;
+    margin-top: 90px;
+}
+
+.clean_text{
+    width: 100%;
+    float: left;
+    font-size: 30px;
+    color: #ffffff;
+    text-align: center;
+    font-weight: 500;
+}
+.ipsum_text{
+    width: 100%;
+    float: left;
+    font-size: 16px;
+    color: #ffffff;
+    text-align: center;
+    margin: 0px;
+}
+.quote_bt_1{
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+}
+.quote_bt_1 a{
+    width: 100%;
+    float: left;
+    font-size: 18px;
+    color: #0b0b0b;
+    background-color: #ffffff;
+    padding: 8px 15px;
+}
+.quote_bt_1 a {
+    width: 100%;
+    float: left;
+    font-size: 18px;
+    color: #0b0b0b;
+    background-color: #ffffff;
+    padding: 8px 15px;
+    margin-top: 50px;
+}
+.quote_bt_1 a:hover {
+    color: #ffffff;
+    background-color: #252525;
+}
+
+/* providing section end */
+
+
