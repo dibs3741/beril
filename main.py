@@ -63,7 +63,7 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S',
     handlers=[
         RichHandler(),                          # Rich logs to console
-        logging.FileHandler("beril.log")          # Standard logs to file
+        logging.FileHandler("./log/beril.log")          # Standard logs to file
     ]
 )
 log = logging.getLogger("rich")

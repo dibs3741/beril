@@ -2,4 +2,6 @@ env/
 log/*
 ssl/certificate.crt.*
 ssl/private.key.*
+data/pos/*
+!data/pos/.gitignore
 __pycache__/
