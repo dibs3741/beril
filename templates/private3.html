@@ -14,7 +14,15 @@
     <link href="{{ url_for('static', path='/expresstable.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', path='/jqwidgets/jqwidgets/styles/jqx.base.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', path='/jqwidgets/jqwidgets/styles/jqx.ui-smoothness.css') }}" rel="stylesheet" type="text/css">
-{% endblock %} {# head #}
+    <style>
+        .mycontainer {
+            display: flex;
+        }
+        .mycontainer > div{
+            padding: 5px;
+        }
+    </style>
+    {% endblock %} {# head #}
 
 <body>
 {% block content %}
@@ -128,7 +136,6 @@
             <div style="padding-right:25px;"> Account selected: </div> 
             <div id="id_acc_selected"></div>
         </div>
-
         {% block metrics %}
         {% endblock %} {# metrics #}
     </section>
@@ -140,6 +147,8 @@
     <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    {# #}
+    <script src="https://www.unpkg.com/@propelauth/javascript@2.0.11/dist/javascript.min.js"></script>
     {# #}
     <script src="{{ url_for('static', path='jqwidgets/scripts/jquery-1.11.1.min.js') }}"></script>
     <script src="{{ url_for('static', path='jqwidgets/jqwidgets/jqxcore.js') }}"></script>

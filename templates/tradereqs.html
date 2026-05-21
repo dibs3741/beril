@@ -11,6 +11,11 @@
         Trade limit indicates the max amount that can be traded per instrument on a given day
         </div> 
         <div id="id_traderules"></div> 
+        <div id="messagepopup">
+            <div id="messageNotification">
+                <div><span id="textloadmsg"></span></div>
+            </div>
+        </div>
     </div>
 {% endblock %} {# metrics #}
 
@@ -76,15 +81,22 @@ $(document).ready(function () {
         autoheight: true,
         width: '700',
         showtoolbar: true,
+        selectionmode: 'checkbox',
         rendertoolbar: function (statusbar) {
             var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
             var reloadButton   = $(" \
                 <div style='float:left; margin-left:1px;'> \
-                <img style='position:relative; margin-top:1px; width:20px; height:20px;' src=\"{{ url_for('static', path='/img/refresh.png') }}\" /> \
+                <img style='position:relative; margin-top:1px; width:20px; height:20px;' src=\"{{ url_for('static', path='/img/reload.png') }}\" /> \
                 <span style='margin-left: 5px; position: relative; top: -1px;'>Fetch</span> </div>");
+            var tradedButton   = $(" \
+                <div style='float:left; margin-left:1px;'> \
+                <img style='position:relative; margin-top:1px; width:20px; height:20px;' src=\"{{ url_for('static', path='/img/refresh.png') }}\" /> \
+                <span style='margin-left: 5px; position: relative; top: -1px;'>Traded</span> </div>");
             container.append(reloadButton);
+            container.append(tradedButton);
             statusbar.append(container);
             reloadButton.jqxButton({ theme: 'ui-smoothness', width: 75, height: 20 });
+            tradedButton.jqxButton({ theme: 'ui-smoothness', width: 75, height: 20 });
             reloadButton.click(function (event) {
                 globalfolio = sessionStorage.getItem('globalfolio');
                 var url = "/folio/tradereq/v1?folioname=" + globalfolio;
@@ -122,7 +134,50 @@ $(document).ready(function () {
                 });
                 $("#id_tradereq").jqxGrid({ source: dataAdapter });
             });
-        },
+            tradedButton.click(function (event) {
+                globalfolio = sessionStorage.getItem('globalfolio');
+                var rowindexes = $('#id_tradereq').jqxGrid('getselectedrowindexes');
+                if (rowindexes.length == 0) {
+                    var result = confirm("no trades marked as executed");
+                    return
+                }
+                var data = new Array();
+                for (var i=0; i < rowindexes.length; i++) {
+                    var row = {};
+                    var dataRecord = $("#id_tradereq").jqxGrid('getrowdata', rowindexes[i]);
+                    row['symbol'] = dataRecord.symbol
+                    row['side'] = dataRecord.side 
+                    row['qty'] = dataRecord.qty 
+                    data[i] = row;
+                }                        
+                $.ajax({
+                    type: "PUT",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    cache: false,
+                    async: false,
+                    url: '/folio/trades/v2',
+                    data: JSON.stringify({ rows:data, 'folioname':globalfolio }),
+                    success: function (data, status, xhr) {
+                        //console.log(xhr.responseJSON);
+                        //$("#textloadmsg").text(xhr.responseJSON.data);
+                        //if (xhr.responseJSON.success == true) {
+                        //    console.log("Response", xhr.responseJSON);
+                        //}
+                        //else {
+                        //    $("#textloadmsg").text("Trade execution status persisted");
+                        //    $("#messageNotification").jqxNotification({ template: "success" });
+                        //    $("#messageNotification").jqxNotification("open");
+                        //}
+                    },
+                    error: function (jqXHR, textStatus, errorThrown, data, status) {
+                        $("#textloadmsg").text(xhr.responseJSON.data);
+                        $("#messageNotification").jqxNotification({ template: "error" });
+                        $("#messageNotification").jqxNotification("open");
+                    }
+                }); // ajax end 
+            }); // tradedButton.click(function 
+        }, // rendertoolbar: function 
         renderstatusbar: function(statusbar) {
         },
         ready: function () {

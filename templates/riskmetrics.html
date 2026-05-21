@@ -1,7 +1,12 @@
 {% extends "private3.html" %}  
 
-
 {% block metrics %}
+    <div class="mycontainer">
+        <div>this is a column 1</div>
+        <div>this is a column 2</div>
+    </div> <!--<div class="mycontainer">-->
+    <div class="mycontainer">
+    <div>
     <div style="padding:1px;">
         <div style="padding-left:50px;"> 
             <input type="button" id="swap_load" value="Fetch"/>
@@ -58,7 +63,7 @@
             </tbody> 
         </table> 
         </div> 
-    </div>
+    </div> <!-- <div style="padding:1px;"> -->
     <div style="padding-left:50px;">
     <div id='jqxTabs'>
         <ul>
@@ -138,8 +143,21 @@
             won’t underperform more than a certain percentage.
             </p>
         </div> 
-    </div> 
-    </div> 
+    </div> <!-- <div id='jqxTabs'> -->
+    </div> <!-- <div style="padding-left:50px;"> -->
+    </div> <!-- mycontainer group 1 -->
+    <div> 
+        <div id='idPeriodGroup'>
+            <button class="classPeriod" id=idPeriodDly>Daily</button>
+            <button class="classPeriod" id=idPeriodMly>Monthly </button>
+            <button class="classPeriod" id=idPeriodQly>Quarterly</button>
+            <button class="classPeriod" id=idPeriodYly>Yearly</button>
+        </div>    
+        <div id='chartContainer' style="width:850px; height:500px;">
+	    </div>                           
+    </div> <!-- mycontainer group 2 -->       
+    </div> <!--<div class="mycontainer">-->
+
 {% endblock %} {# metrics #}
 
 {% block scripted %}
@@ -151,6 +169,73 @@ $(document).ready(function () {
         scrollPosition: 'both',
         theme: 'ui-smoothness'
     });
+    $("#idPeriodGroup").jqxButtonGroup({
+        theme: 'ui-smoothness',
+        mode: 'radio',
+        width: '300px',
+        height: '25px'
+    });
+    $("#idPeriodGroup").jqxButtonGroup('setSelection', 0);
+    globalfolio = sessionStorage.getItem('globalfolio');
+    var url = "/performance/v1?folioname=" + globalfolio;
+    var source = {
+        datatype: "json",
+        datafields: [
+            { name: 'symbol', type:'string'},
+            { name: 'returns', type:'number'}
+        ],
+        id: 'ident',
+        cache: false,
+        type : 'GET',
+        pagesize: 20,
+        url: url,
+        root: 'data',
+        updaterow: function (rowid, rowdata, commit) {
+        }
+    };
+
+    var dataAdapter = new $.jqx.dataAdapter(source, { 
+        async: false,
+        autoBind: true,
+        loadError: function (xhr, status, error) { 
+            alert('Error loading "' + source.url + '" : ' + error); 
+        } 
+    });
+
+    var settings = {
+        title: "Performance Comparison",
+        description: "Comparison of portfolio returns with S&P 500",
+        showLegend: true,
+        enableAnimations: true,
+        padding: { left: 5, top: 5, right: 5, bottom: 5 },
+        titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+        source: dataAdapter,
+        xAxis:                    {
+            dataField: 'symbol',
+            gridLines: { visible: true },
+            valuesOnTicks: false
+        },
+        colorScheme: 'scheme01',
+        columnSeriesOverlap: false,
+        seriesGroups:                    
+        [
+            {
+                type: 'column',
+                valueAxis:
+                {
+                    visible: true,
+                    unitInterval: 0.5,
+                    title: { text: 'Performance Comparison' }
+                },
+                series: [
+                        { dataField: 'returns', displayText: 'Returns' }
+                    ]
+            }
+        ]
+    };
+    
+    $('#chartContainer').jqxChart(settings);
+
     $("#swap_load").jqxButton({ width: '385px', height: '35px', theme: 'ui-smoothness' });
     $('#swap_load').click(function(){
         globalfolio = sessionStorage.getItem('globalfolio');

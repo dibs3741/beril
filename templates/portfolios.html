@@ -16,6 +16,49 @@
 {% block scripted %}
 <script rel="javascript" type="text/javascript">
 $(document).ready(function () {
+    function fetchData() {
+        const authClient = PropelAuth.createClient({
+            authUrl: "https://6798173.propelauthtest.com",
+            enableBackgroundTokenRefresh: true,
+        });
+
+        // We return the promise chain so the caller can still use .then() or await
+        return authClient.getAuthenticationInfoOrNull()
+            .then(authInfo => {
+                if (!authInfo) {
+                    console.log("User is not logged in");
+                    return null;
+                }
+                var url = "/folios/v2";
+                var source = {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'folio_name' }
+                    ],
+                    id: 'id',
+                    type : 'GET',
+                    root: 'data',
+                    url: url
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source, {
+                    beforeSend: function (jqxhr, settings) { 
+                       jqxhr.setRequestHeader("Authorization", "Bearer " + authInfo.accessToken); 
+                    },
+                    downloadComplete: function (data, status, xhr) { 
+                       console.log(xhr); 
+                    }
+                });
+                $('#id_folio').jqxListBox({ 
+                    source: dataAdapter
+                })
+                sessionStorage.setItem('accesstoken', authInfo.accessToken);
+                return authInfo.accessToken;
+            })
+            .catch(error => {
+                console.error("Error fetching auth info:", error);
+            });
+    }
+
     $('#id_folio').jqxListBox({ 
         width: '75px',
         height: '100px',
@@ -23,7 +66,9 @@ $(document).ready(function () {
         valueMember: "folio_name",
         theme: 'ui-smoothness'
     });
-    var url = "/folios/v1";
+    fetchData();
+    /*
+    var url = "/folios/v2";
     var source = {
         datatype: "json",
         datafields: [
@@ -36,8 +81,8 @@ $(document).ready(function () {
     };
     var dataAdapter = new $.jqx.dataAdapter(source, {
         beforeSend: function (jqxhr, settings) { 
-           accesstoken = sessionStorage.getItem('accesstoken');
-           jqxhr.setRequestHeader("Authorization", 'Bearer ' + accesstoken); 
+           //accesstoken = sessionStorage.getItem('accesstoken');
+           jqxhr.setRequestHeader("Authorization", "Bearer " + accesstoken); 
         },
         downloadComplete: function (data, status, xhr) { 
            console.log(xhr); 
@@ -46,11 +91,13 @@ $(document).ready(function () {
     $('#id_folio').jqxListBox({ 
         source: dataAdapter
     })
+    */
 
     $("#id_folio").on('select', function (event) {
         if (event.args) {
             var item = event.args.item;
             if (item) {
+                accesstoken = sessionStorage.getItem('accesstoken');
                 sessionStorage.setItem('globalfolio', item.value);
                 document.getElementById('id_acc_selected').innerHTML = item.value;
                 globalfolio = item.value;

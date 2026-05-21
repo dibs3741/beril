@@ -29,7 +29,7 @@ $(document).ready(function () {
             statusbar.append(container);
             reloadButton.jqxButton({ theme: 'ui-smoothness', width: 75, height: 20 });
             reloadButton.click(function (event) {
-                globalfolio = sessionStorage.getItem('globalfolio');
+                globalfolio = session Storage.getItem('globalfolio');
                 var url = "/position/latest/v1?folioname=" + globalfolio;
                 var source = {
                     datatype: "json",
