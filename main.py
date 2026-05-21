@@ -1,7 +1,10 @@
 # main.py
 
+import os 
 import ssl
 import json 
+import glob
+import requests
 import traceback
 import logging
 import numpy as np 
@@ -13,10 +16,12 @@ from decimal import Decimal
 from tabulate import tabulate
 from scipy.stats import norm 
 from typing import Dict, List, Optional
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 #
 from fastapi import Depends, FastAPI, HTTPException, Request, Response, status
 from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse
+from fastapi.responses import RedirectResponse
 from fastapi.security import OAuth2, OAuth2PasswordRequestForm
 from fastapi.security.utils import get_authorization_scheme_param
 from fastapi.templating import Jinja2Templates
@@ -27,10 +32,14 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 from rich import inspect, print
 from rich.console import Console
+from rich.logging import RichHandler
 from datetime import datetime, timedelta
 from pytz import timezone
+from propelauth_fastapi import init_auth, User
 #
+from sqlalchemy import text 
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import bindparam 
 #
 import yfinance as yf 
 import crud, models, schemas
@@ -41,9 +50,23 @@ from database import SessionLocal, engine
 from auth_bearer import JWTBearer
 from auth_bearer import decodeJWT
 
-logging.getLogger('passlib').setLevel(logging.ERROR)
 console = Console()
+logging.getLogger('passlib').setLevel(logging.ERROR)
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+
+# Standard logging configuration
+logging.basicConfig(
+    level="NOTSET",
+    format="%(asctime)s - %(message)s",
+    datefmt='%Y-%m-%d %H:%M:%S',
+    handlers=[
+        RichHandler(),                          # Rich logs to console
+        logging.FileHandler("beril.log")          # Standard logs to file
+    ]
+)
+log = logging.getLogger("rich")
 
 #dictParams = {} 
 #dictParams['divergence'] = {} 
@@ -136,16 +159,22 @@ class Settings:
     SECRET_KEY: str = "secret-key"
     REFRESH_SECRET_KEY: str = "secret-key"
     ALGORITHM = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES = 30  # in mins
-    REFRESH_TOKEN_EXPIRE_MINUTES = 30  # in mins
+    ACCESS_TOKEN_EXPIRE_MINUTES = 90  # in mins
+    REFRESH_TOKEN_EXPIRE_MINUTES = 90  # in mins
     COOKIE_NAME = "access_token"
 
 app = FastAPI()
+#auth = init_auth("YOUR_AUTH_URL", "YOUR_API_KEY")
+auth = init_auth("https://6798173.propelauthtest.com", "1cb297dc8dbef0663a5ebce59feb462f3498760cd4ef9fb38fbc801d155d14fa73ef0671dc78459a92f3fd1044dab9bf")
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 ssl_context.load_cert_chain('ssl/certificate.crt', keyfile='ssl/private.key')
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name='static')
 settings = Settings()
+
+@app.get("/api/whoami")
+def read_root(user: User = Depends(auth.require_user)):
+    return {"Hello": user.user_id}
 
 # --------------------------------------------------------------------------
 # Authentication logic
@@ -237,13 +266,22 @@ async def feedback_post(request: Request):
     console.log(req_json)
     return {'data':'submission Successful! thank you!'} 
 
-@app.get("/private3", response_class=HTMLResponse)
+@app.get("/private3")
 def private3_get(request: Request):
-    return templates.TemplateResponse("private3.html", {"data":dictParams['welcome'], "request":request, "user":None})
+    return RedirectResponse(url="https://6798173.propelauthtest.com");
+
+#@app.get("/private3", response_class=HTMLResponse)
+#def private3_get(request: Request):
+#    return templates.TemplateResponse("private3.html", {"data":dictParams['welcome'], "request":request, "user":None})
 
 @app.get("/logmein/v1", response_class=HTMLResponse)
 def logmein_get_v1(request: Request):
     return templates.TemplateResponse("logmein.html", {"data":dictParams['logmein'], "request":request, "user":None})
+
+#@app.get("/logmein/v1")
+#def logmein_get_v1(request: Request):
+#    console.log("inside logmein, to be redirected now")
+#    return RedirectResponse(url="https://6798173.propelauthtest.com");
 
 @app.get("/portfolios/v1", response_class=HTMLResponse)
 def portfolios_get_v1(request: Request):
@@ -419,14 +457,126 @@ async def folio_get_v1(db: Session = Depends(get_db), dependencies=Depends(JWTBe
     console.log(decodeJWT(dependencies)) 
     return folios
 
+@app.get("/folios/v2", response_model=List[schemas.MasterFolio]) 
+async def folio_get_v2(db: Session = Depends(get_db), user: User = Depends(auth.require_user)):
+    u = user.email
+    console.log(f'authenticated user: {user.email}')
+    folios = db.query(models.MasterFolio).filter_by(username=u).all()
+    df = pd.DataFrame.from_records(folios, index='id', columns=['user','folio','id']) 
+    console.log(f'\n{df.to_string()}') 
+    return folios
+
 @app.get("/folio/traderules/v1") 
-async def folio_traderules_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTBearer())):
-    u = decodeJWT(tkn).get('sub') 
+async def folio_traderules_v1(
+folioname:str, 
+db: Session = Depends(get_db), 
+user: User = Depends(auth.require_user)):
     file = 'sql/trading.rules.1.sql' 
     with open(file, 'r') as file:
         f = file.read() 
-        df = pd.read_sql(f, engine, params={'folioname':folioname, 'username':u})
+        df = pd.read_sql(f, engine, params={'folioname':folioname, 'username':user.email})
     return {'data':df.to_dict(orient='records')}
+
+@app.get("/load/position/v1") 
+async def load_position_v1(request: Request, db: Session = Depends(get_db)): 
+    console.log(f"Handling request for: {request.scope['endpoint'].__name__}")
+    log.info(f"Handling request for: {request.scope['endpoint'].__name__}")
+
+    # static data initialization 
+    asofdate = datetime.now(timezone('US/Eastern')).strftime('%Y-%m-%d')
+    batchid = datetime.now(timezone('US/Eastern')).strftime('%y%m%d%H%M%S')
+    map_acc_idname = {
+        'ira': '233044500',
+        'brokerage': 'X70974968',
+        '401kb': '652797501' 
+    }
+
+    directory_path = r'data/pos/*'
+    list_of_files = glob.glob(directory_path)
+    latest_file = max(list_of_files, key=os.path.getmtime)
+    console.log(f"Processing most recent file: {latest_file}")
+    log.info(f"Processing most recent file: {latest_file}")
+
+    df1 = pd.read_csv(latest_file)
+    df1 = df1.replace({r"[$&]": ''}, regex=True)
+    df1.reset_index(inplace=True)
+    df2 = df1.iloc[:, [0,2, 7]].copy()
+    df2.fillna(0, inplace=True)
+    df2.columns= ['account','symbol','notional']
+    df3 = df2[:-3]
+    df4 = df3[df3.symbol != 'Pending activity']
+    df4 = df4[df4.account != '80454']
+    df4 = df4[df4.account != 'Z26792884']
+
+    # check for new symbols not in sec master
+    console.log("checking for new symbols not in sec master") 
+    log.info("checking for new symbols not in sec master") 
+    incoming_name_list = df4.symbol.tolist()
+    file = 'sql/security_master.sql' 
+    with open(file, 'r') as file:
+        f = file.read() 
+        dfb = pd.read_sql(f, engine, params={})
+        master_security_list = dfb.symbol.tolist()
+    result = set(incoming_name_list).issubset(master_security_list) 
+    if not result: 
+        console.log("found new symbols not in sec master") 
+        difference_a_b = list(set(incoming_name_list) - set(master_security_list))
+        console.log(difference_a_b) 
+        log.info(difference_a_b) 
+        return {}
+
+    # check if sec master has stale holdings 
+    console.log('') 
+    console.log('check if sec master has stale holdings') 
+    log.info('') 
+    log.info('check if sec master has stale holdings') 
+
+    difference_b_a = list(set(master_security_list) - set(incoming_name_list))
+    console.log(difference_b_a) 
+    log.info(difference_b_a) 
+
+    # loading positions from all accounts
+    console.log('') 
+    console.log(f"loading positions from all accounts:") 
+    console.log(f"Batch id: {batchid}") 
+    log.info(f"Batch id: {batchid}") 
+    for folioname in map_acc_idname:
+        console.log(f'now loading: {folioname}') 
+        log.info(f'now loading: {folioname}') 
+        df_ira1 = df4[df4.account == map_acc_idname.get(folioname)]
+        #
+        try: 
+            r = db.query(Position).filter(
+                Position.asofdate == asofdate,
+                Position.folioname == folioname,
+                Position.username == 'dibyendu@gmx.com',
+                ).delete() 
+            db.commit()
+            console.log(f"Deleted {r} records from table") 
+            console.log(f"Loading {len(df_ira1)} rows...") 
+            log.info(f"Deleted {r} records from table") 
+            log.info(f"Loading {len(df_ira1)} rows...") 
+            for i, row in df_ira1.iterrows(): 
+                o = Position()
+                o.asofdate = asofdate
+                o.loaddate = asofdate
+                o.symbol = row['symbol']
+                o.notional = row['notional'] 
+                o.last_px = 0
+                o.batchid = batchid
+                o.folioname = folioname
+                o.username = 'dibyendu@gmx.com' 
+                db.add(o) 
+            db.commit()
+            console.log('-') 
+            log.info('-') 
+        except: 
+            db.rollback()
+            console.log(traceback.format_exc())
+            log.info(traceback.format_exc())
+    console.log(f"--end--") 
+    console.log(f"") 
+    return {}
 
 @app.get("/folio/attribution/v1") 
 async def folio_attribution_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTBearer())):
@@ -468,6 +618,42 @@ async def folio_attribution_v1(folioname:str, db: Session = Depends(get_db), tkn
         df34 = pd.DataFrame(df33.to_records())
         console.log(df34) 
     return {'data':df34.to_dict(orient='records')}
+
+@app.put("/folio/prices/v2") 
+async def folio_prices_v2(payload: Request, db: Session = Depends(get_db)):
+    payloadjs = await payload.json()
+    asofdate = datetime.now(timezone('US/Eastern')).strftime('%Y-%m-%d')
+    symbol = payloadjs["symbol"]
+    #
+    url = f'https://eodhd.com/api/eod/{symbol}?api_token=699e7b7beb1948.60098083&fmt=json'
+    data = requests.get(url).json()
+    df = pd.DataFrame(data)
+    df1 = df[['date', 'close']]
+    #
+    try: 
+        r = db.query(Prices).filter(
+            Prices.ticker == symbol,
+            Prices.source == 'eodhd',
+            Prices.adjusted == False,
+            ).delete() 
+        db.commit()
+        console.log(f"Processing {symbol}") 
+        console.log(f"Deleted {r} records from table") 
+        console.log(f"Loading {len(df1)} rows...") 
+        for i, row in df1.iterrows(): 
+            o = Prices()
+            o.asofdate = row['date']
+            o.price = row['close']
+            o.ticker = symbol
+            o.source = 'eodhd'
+            o.adjusted = False
+            db.add(o) 
+        db.commit()
+        console.log(f"--end--") 
+        console.log(f"") 
+    except: 
+        db.rollback()
+        console.log(traceback.format_exc())
 
 @app.put("/folio/prices/v1") 
 async def folio_prices_v1(payload: Request, db: Session = Depends(get_db)):
@@ -541,6 +727,33 @@ async def folio_position_v1(payload: Request, db: Session = Depends(get_db)):
         console.log(traceback.format_exc())
 
 
+@app.put("/folio/trades/v2") 
+async def folio_trades_v2(
+payload: Request, 
+db: Session = Depends(get_db)): 
+    payloadjs = await payload.json()
+    df01 = pd.DataFrame(payloadjs['rows'])
+    folioname = payloadjs['folioname'] 
+    asofdate = datetime.now(timezone('US/Eastern')).strftime('%Y-%m-%d')
+    batchid = datetime.now(timezone('US/Eastern')).strftime('%y%m%d%H%M%S')
+    console.log(f'\n{df01.to_string()}') 
+    #
+    try: 
+        for i, row in df01.iterrows(): 
+            o = Trades()
+            o.loaddate = asofdate
+            o.batchid = batchid
+            o.user_name = 'dibyendu@gmx.com'
+            o.asofdate = asofdate
+            o.account = folioname 
+            o.symbol = row['symbol']
+            o.quantity = row['qty']
+            db.add(o) 
+        db.commit()
+    except: 
+        db.rollback()
+        console.log(traceback.format_exc())
+
 @app.put("/folio/trades/v1") 
 async def folio_trades_v1(payload: Request, db: Session = Depends(get_db)):
     payloadjs = await payload.json()
@@ -560,7 +773,7 @@ async def folio_trades_v1(payload: Request, db: Session = Depends(get_db)):
             o.batchid = batchid
             o.user_name = payloadjs['username']
             o.asofdate = row['Run Date'] 
-            o.account = row['Account'] 
+            o.account = str(row['Account'])
             o.symbol = row['Symbol']
             o.quantity = row['Quantity']
             db.add(o) 
@@ -606,13 +819,15 @@ def folio_projection_v1(
     return {'data':p} 
 
 @app.get("/folio/tradereq/v1") 
-def folio_tradereq_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTBearer())):
-    u = decodeJWT(tkn).get('sub')
+def folio_tradereq_v1(
+folioname:str, 
+db: Session = Depends(get_db), 
+user: User = Depends(auth.require_user)):
     #
     file = 'sql/trading.rules.1.sql'
     with open(file, 'r') as file:
         f = file.read()
-        df_rules = pd.read_sql(f, engine, params={'folioname':folioname, 'username':u})
+        df_rules = pd.read_sql(f, engine, params={'folioname':folioname, 'username':user.email})
         df_rules_buy = df_rules[df_rules.side == 'buy']
         df_rules_sell = df_rules[df_rules.side == 'sell']
         spreadlimitbuy = df_rules_buy.drift_limit.item()
@@ -620,14 +835,14 @@ def folio_tradereq_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(
         spreadlimitsell = df_rules_sell.drift_limit.item() * -1 
         tradelimitsell = df_rules_sell.trade_cap.item() 
     #
-    r = folio_dashboard_v1(folioname, db, tkn) 
+    r = folio_dashboard_v1(folioname, db, user) 
     df1 = pd.DataFrame()
     df1 = pd.DataFrame.from_dict(r['data'], orient='columns') 
     df2 = df1[~df1.sector.isin(['cash'])]
     df3 = df2[~((df2.spread > 0) & (df2.spread < spreadlimitbuy))]
     df4 = df3[~((df3.spread < 0) & (df3.spread > spreadlimitsell))]
     #
-    x = position_latest_v1(folioname, db, tkn) 
+    x = position_latest_v1(folioname, db, user) 
     df10 = pd.DataFrame.from_dict(x['data'], orient='columns') 
     df11 = df10[['symbol', 'last_px']]
     #
@@ -650,19 +865,27 @@ def folio_tradereq_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(
     file = 'sql/trades.sql' 
     with open(file, 'r') as file:
         f = file.read() 
-        df30 = pd.read_sql(f, engine, params={'username':u}) 
+        df30 = pd.read_sql(f, engine, params={'username':user.email}) 
         df30.set_index("symbol", inplace = True)
     #
     df40 = pd.merge(df20, df30, on=['symbol'], how='left')
     df40.reset_index(inplace=True)
-    df40.fillna('', inplace=True)
+    fill_values = {
+        'asofdate': '2000-01-01',
+        'quantity': 0,
+        'account': 'n/a' 
+    }
+    df40.fillna(fill_values, inplace=True)
     df41 = df40[['symbol', 'side', 'qty', 'asofdate', 'quantity', 'account']] 
-    console.log(df41.to_string())
-    return {'data':df41.to_dict(orient='records')}
+    df42 = df41.sort_values(by=['side', 'symbol'])
+    console.log(df42.to_string())
+    return {'data':df42.to_dict(orient='records')}
 
 @app.get("/folio/cash/v1") 
-def folio_cash_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTBearer())):
-    u = decodeJWT(tkn).get('sub') 
+#def folio_cash_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTBearer())):
+def folio_cash_v1(folioname:str, db: Session = Depends(get_db), user: User = Depends(auth.require_user)):
+    #u = decodeJWT(tkn).get('sub') 
+    u = user.email
     df = pd.DataFrame()
     file = 'sql/cashholdings.sql' 
     with open(file, 'r') as file:
@@ -673,8 +896,10 @@ def folio_cash_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTB
     return {'data':x/y} 
 
 @app.get("/folio/allocation/v1") 
-def folio_allocation_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTBearer())):
-    u = decodeJWT(tkn).get('sub') 
+#def folio_allocation_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTBearer())):
+def folio_allocation_v1(folioname:str, db: Session = Depends(get_db), user: User = Depends(auth.require_user)):
+    #u = decodeJWT(tkn).get('sub') 
+    u = user.email
     df = pd.DataFrame()
     file = 'sql/allocation.sql' 
     with open(file, 'r') as file:
@@ -691,19 +916,19 @@ def folio_allocation_v1(folioname:str, db: Session = Depends(get_db), tkn=Depend
     }
 
 @app.get("/folio/dashboard/v1") 
-def folio_dashboard_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTBearer())):
-    u = decodeJWT(tkn).get('sub') 
+def folio_dashboard_v1(folioname:str, db: Session = Depends(get_db), user: User = Depends(auth.require_user)):
+    # u = decodeJWT(tkn).get('sub') 
     df = pd.DataFrame()
     file = 'sql/holdings.sql' 
     with open(file, 'r') as file:
         f = file.read() 
-        df = pd.read_sql(f, engine, params={'folioname':folioname, 'username':u}) 
+        df = pd.read_sql(f, engine, params={'folioname':folioname, 'username':user.email}) 
         df.rename(columns={'notional':'actual'}, inplace=True)
     file2 = 'sql/investablenav.sql' 
     investablenav = 0 
     with open(file2, 'r') as file:
         f = file.read() 
-        df1 = pd.read_sql(f, engine, params={'folioname':folioname, 'username':u}) 
+        df1 = pd.read_sql(f, engine, params={'folioname':folioname, 'username':user.email}) 
         investablenav = df1['notional'][0] 
     console.log(f'>>>> {investablenav}') 
     df['forecast'] = df['allocated'] * investablenav * 0.01
@@ -713,13 +938,12 @@ def folio_dashboard_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends
     return {'data':df.to_dict(orient='records')}
 
 @app.get("/position/latest/v1") 
-def position_latest_v1(folioname:str, db: Session = Depends(get_db), tkn=Depends(JWTBearer())):
-    u = decodeJWT(tkn).get('sub') 
+def position_latest_v1(folioname:str, db: Session = Depends(get_db), user: User = Depends(auth.require_user)):
     df = pd.DataFrame()
     file = 'sql/position_latest.sql'
     with open(file, 'r') as file:
         f = file.read() 
-        df = pd.read_sql(f, engine, params={'folioname':folioname, 'username':u}) 
+        df = pd.read_sql(f, engine, params={'folioname':folioname, 'username':user.email}) 
         df.fillna(0, inplace=True)
     df1 = df[['symbol','notional','last_px','description']]
     return {'data':df1.to_dict(orient='records')}
@@ -882,6 +1106,41 @@ def income_ytd_v1(folioname:str, db: Session=Depends(get_db), tkn=Depends(JWTBea
     #
     return {'data':activity10.to_dict(orient='records')}
 
+
+@app.get("/performance/v1") 
+def performance_v1(folioname:str, db: Session=Depends(get_db)):
+    u = 'dibyendu@gmx.com'
+    file = 'sql/basket.sql'
+    with open(file, 'r') as file:
+        f = file.read() 
+        df = pd.read_sql(f, engine, params={'folioname':folioname, 'username':u}) 
+        df.fillna(0, inplace=True)
+    #
+    fromdate = '2025-12-31' 
+    todate = '2026-03-31' 
+    basket = df.symbol.tolist()
+    basket.append('SPY') 
+    file = 'sql/prices_securities.sql'
+    with open(file, 'r') as file:
+        f = file.read() 
+        df1= pd.read_sql(text(f).bindparams(bindparam('tickers', value=basket, expanding=True)), 
+        engine, 
+        params={'datefrom':fromdate, 'dateto':todate}) 
+    
+    df2 = df1.copy()
+    df3 = df2.pivot(index='asofdate', columns='ticker', values='price') 
+    df4 = pd.DataFrame(df3.to_records())
+    df4.set_index("asofdate", inplace = True)
+    df5 = df4.iloc[[0, -1]]
+    df6 = df5.pct_change()
+    df7 = df6.round(4)[1:] 
+    print(df7.to_string())
+    df7.reset_index(inplace=True)
+    df7.drop('asofdate', axis=1, inplace=True)
+    df8 = pd.melt(df7, id_vars=[], var_name='symbol', value_name='returns')
+    print(df8.to_string())
+    #return {'data':df7.iloc[0].to_dict()}
+    return {'data':df8.to_dict(orient='records')}
 
 @app.get("/metrics/v2") 
 def metrics_v2(folioname:str, db: Session=Depends(get_db), tkn=Depends(JWTBearer())):
@@ -1060,3 +1319,24 @@ def metrics_vol_v1(db: Session = Depends(get_db)):
         }
     }
 
+from fastapi import Query 
+
+def validate_args(param_name: str):
+    async def validator( entity: str = Query(..., alias=param_name)) -> str:   
+        print(f'>>> {entity} <<<') 
+        return "test" 
+    return validator
+
+def validate_args1(param_name: str = Query(...)):
+    print(f'>>> {param_name} <<<') 
+    return "test" 
+
+@app.get("/test/v1") 
+def test_v1(arg1:str = Depends(validate_args('arg1')), arg2:str = Depends(validate_args('arg2'))):
+    return {} 
+
+@app.get("/test/v2") 
+def test_v1(arg1:str = Query(...), arg2:str = Query(...)):
+    print(f'>>>- {arg1} -<<<') 
+    print(f'>>>- {arg2} -<<<') 
+    return {} 
