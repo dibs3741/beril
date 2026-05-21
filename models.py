@@ -41,7 +41,8 @@ class Position(Base):
     symbol = Column(String) 
     notional = Column(Numeric(20,2)) 
     last_px = Column(Numeric(20,2)) 
-    batchid = Column(Integer) 
+    batchid = Column(Numeric(20,0)) 
+    #batchid = Column(Integer) 
     folioname = Column(String) 
     username = Column(String)
 
@@ -62,4 +63,7 @@ class Prices(Base):
     asofdate = Column(Date) 
     ticker = Column(String) 
     price = Column(Numeric(20,2)) 
+    source = Column(String) 
+    adjusted = Column(Boolean)
+
 
