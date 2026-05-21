@@ -1,3 +1,5 @@
 env/
 log/*
+ssl/certificate.crt.*
+ssl/private.key.*
 __pycache__/
